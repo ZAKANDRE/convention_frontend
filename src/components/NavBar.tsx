@@ -1,22 +1,19 @@
+// src/components/NavBar.tsx
 
 import { useState } from 'react';
-import { Anchor, Box, Burger, Container, Group } from '@mantine/core';
+import { Anchor, Box, Burger, Container, Group, Image } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import Afpalogo from '../assets/logo/afpa_logo.png'
+// La ligne d'importation a été modifiée pour être plus explicite
+import AfpalogoURL from '../assets/logo/afpa_logo.png?url';
 import classes from '../module/css/NavBar.module.css';
 
 const userLinks = [
-  { link: '#', label: 'Privacy & Security' },
-  { link: '#', label: 'Account settings' },
-  { link: '#', label: 'Support options' },
+  { link: '#', label: 'Mon compte' }
 ];
 
 const mainLinks = [
-  { link: '#', label: 'Book a demo' },
-  { link: '#', label: 'Documentation' },
-  { link: '#', label: 'Community' },
-  { link: '#', label: 'Academy' },
-  { link: '#', label: 'Forums' },
+  { link: '#', label: 'Mes conventions' },
+  { link: '#', label: 'Conventions envoyés' }
 ];
 
 export function NavBar() {
@@ -24,7 +21,7 @@ export function NavBar() {
   const [active, setActive] = useState(0);
 
   const mainItems = mainLinks.map((item, index) => (
-    <Anchor<'a'>
+    <Anchor<'a'> 
       href={item.link}
       key={item.label}
       className={classes.mainLink}
@@ -52,7 +49,8 @@ export function NavBar() {
   return (
     <header className={classes.header}>
       <Container className={classes.inner}>
-        <Afpalogo  />
+        <Image src={AfpalogoURL} h={50} w="auto" />
+
         <Box className={classes.links} visibleFrom="sm">
           <Group justify="flex-end">{secondaryItems}</Group>
           <Group gap={0} justify="flex-end" className={classes.mainLinks}>
