@@ -12,18 +12,24 @@ import {
   Title,
 } from '@mantine/core';
 import Afpalogo from '../assets/logo/afpa_logo.png'
-import classes from '../module/css/Authentication.module.css';
+import classes from '../module/css/Login.module.css';
+import { Link } from 'react-router-dom';
 
-export function Authentication() {
+export function Login() {
   return (
-    <Container size={420} my={20}>
-        <Image src={Afpalogo}></Image>
+    <Container size={420} mt={-100} >
+        <Image src={Afpalogo} ></Image>
       <Title ta="center" className={classes.title}>
-        Creer un nouveau utilisateur
+        Connexion
       </Title>
 
       <Text className={classes.subtitle}>
-        Vous avez deja une compte? <Anchor c='#86bc24' >Retour</Anchor>
+        <Anchor component={Link} to="/create-account" c="#86bc24">
+          Créer un compte
+        </Anchor>
+        <Anchor component={Link} to="/home" c="#86bc24">
+          Home Page
+        </Anchor>
       </Text>
 
       <Paper withBorder shadow="sm" p={22} mt={30} radius="md">
