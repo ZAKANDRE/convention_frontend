@@ -16,7 +16,7 @@ export function HomePage() {
       }}
     >
       <AppShell.Header>
-        <NavBar />
+        <NavBar/>
       </AppShell.Header>
       <AppShell.Main>Main</AppShell.Main>
     </AppShell>

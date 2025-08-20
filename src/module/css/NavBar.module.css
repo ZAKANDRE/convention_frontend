@@ -1,17 +1,16 @@
 .header {
-  height: 84px;
-  margin-bottom: 120px;
   background-color: var(--mantine-color-body);
   border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
 }
-
+.mainSection {
+  padding-top: var(--mantine-spacing-md);
+  padding-bottom: var(--mantine-spacing-md);
+}
 .inner {
-  height: 84px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-
 .links {
   padding-top: var(--mantine-spacing-lg);
   height: 84px;
@@ -42,7 +41,7 @@
 
   &[data-active] {
     color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
-    border-bottom-color: var(--mantine-color-blue-6);
+    border-bottom-color: #86bc24;
   }
 }
 
@@ -55,5 +54,66 @@
   @mixin hover {
     color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
     text-decoration: none;
+  }
+}
+.header {
+  padding-top: var(--mantine-spacing-sm);
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  border-bottom: 1px solid light-dark(var(--mantine-color-gray-2), transparent);
+  margin-bottom: 120px;
+}
+
+.mainSection {
+  padding-bottom: var(--mantine-spacing-sm);
+}
+
+.user {
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-sm);
+  transition: background-color 100ms ease;
+
+  &:hover {
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-8));
+  }
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    display: none;
+  }
+}
+
+.userActive {
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-8));
+}
+
+.tabsList {
+  &::before {
+    display: none;
+  }
+}
+
+.tab {
+  font-weight: 500;
+  height: 38px;
+  background-color: transparent;
+  position: relative;
+  bottom: -1px;
+
+  &::before,
+  &::after {
+    background-color: light-dark(
+      var(--mantine-color-gray-2),
+      var(--mantine-color-dark-7)
+    ) !important;
+  }
+
+  &:hover {
+    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+  }
+
+  &[data-active] {
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    border-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-7));
+    border-bottom-color: transparent;
   }
 }
