@@ -11,9 +11,9 @@ import AfpalogoURL from '../assets/logo/afpa_logo.png?url';
 import classes from '../module/css/NavBar.module.css';
 
 const user = {
-  name: 'Jane Spoonfighter',
+  name: 'Ice Cube',
   email: 'janspoon@fighter.dev',
-  image: 'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png',
+  image: 'https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQ30PWuhimFsjTOcl7vjAQJFFkFi5m4PC8yl71hnQN-QJnX_2IZ0wUlJN3iIhke3RHOFSnaT3gnwYaqU5M',
 };
 
 
@@ -61,7 +61,7 @@ export function NavBar() {
                 className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
               >
                 <Group gap={7}>
-                  <Avatar src={user.image} alt={user.name} radius="xl" size={20} />
+                  <Avatar src={user.image} alt={user.name} radius="xl" size={45} />
                   <Text fw={500} size="sm" lh={1} mr={3}>
                     {user.name}
                   </Text>
