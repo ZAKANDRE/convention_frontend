@@ -1,17 +1,11 @@
 import {
   IconChevronDown,
-  IconHeart,
   IconLogout,
-  IconMessage,
-  IconPlayerPause,
   IconSettings,
-  IconStar,
-  IconSwitchHorizontal,
-  IconTrash,
 } from '@tabler/icons-react';
 import cx from 'clsx';
 import { useState } from 'react';
-import { Anchor, Avatar, Box, Burger, Container, Group, Tabs, useMantineTheme,Image, Menu, Text, UnstyledButton } from '@mantine/core';
+import { Anchor, Avatar, Container, Group, Tabs, Image, Menu, Text, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import AfpalogoURL from '../assets/logo/afpa_logo.png?url';
 import classes from '../module/css/NavBar.module.css';
@@ -76,10 +70,8 @@ export function NavBar() {
               </UnstyledButton>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Label>Reglages</Menu.Label>
-              <Menu.Item leftSection={<IconSettings size={16} stroke={1.5} />}>
-                Déconnexion
-              </Menu.Item>
+              <Menu.Label>Options</Menu.Label>
+              <Menu.Item leftSection={<IconSettings size={16} stroke={1.5} />}>Informations compte</Menu.Item>
               <Menu.Item leftSection={<IconLogout size={16} stroke={1.5} />}>Decconnexion</Menu.Item>
             </Menu.Dropdown>
           </Menu>

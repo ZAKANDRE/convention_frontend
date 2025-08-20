@@ -7,18 +7,14 @@ export function HomePage() {
 
   return (
     <AppShell
+      header={{ height: 120 }}
       padding="md"
-      header={{ height: 60 }}
-      navbar={{
-        width: 300,
-        breakpoint: 'sm',
-        collapsed: { mobile: !opened },
-      }}
     >
       <AppShell.Header>
         <NavBar/>
       </AppShell.Header>
-      <AppShell.Main>Main</AppShell.Main>
+      <AppShell.Main>Navbar is only visible on mobile, links that are rendered in the header on desktop are
+        hidden on mobile in header and rendered in navbar instead.</AppShell.Main>
     </AppShell>
   );
 }
