@@ -50,9 +50,9 @@ export function NavBar() {
   ));
 
   return (
-    <div className={classes.header}>
-      <Container className={classes.mainSection} size="md">
-        <Group justify="space-between">
+    <header className={classes.header}>
+      <Container className={classes.mainSection}>
+        <div className={classes.inner}>
           <Image src={AfpalogoURL} h={50} w="auto" />
           <Menu
             width={260}
@@ -76,56 +76,28 @@ export function NavBar() {
               </UnstyledButton>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item
-                leftSection={<IconHeart size={16} color={'red'} stroke={1.5} />}
-              >
-                Liked posts
-              </Menu.Item>
-              <Menu.Item
-                leftSection={<IconStar size={16} color={'yellow'} stroke={1.5} />}
-              >
-                Saved posts
-              </Menu.Item>
-              <Menu.Item
-                leftSection={<IconMessage size={16} color={'blue'} stroke={1.5} />}
-              >
-                Your comments
-              </Menu.Item>
-
-              <Menu.Label>Settings</Menu.Label>
+              <Menu.Label>Reglages</Menu.Label>
               <Menu.Item leftSection={<IconSettings size={16} stroke={1.5} />}>
-                Account settings
+                Déconnexion
               </Menu.Item>
-              <Menu.Item leftSection={<IconSwitchHorizontal size={16} stroke={1.5} />}>
-                Change account
-              </Menu.Item>
-              <Menu.Item leftSection={<IconLogout size={16} stroke={1.5} />}>Logout</Menu.Item>
-
-              <Menu.Divider />
-
-              <Menu.Label>Danger zone</Menu.Label>
-              <Menu.Item leftSection={<IconPlayerPause size={16} stroke={1.5} />}>
-                Pause subscription
-              </Menu.Item>
-              <Menu.Item color="red" leftSection={<IconTrash size={16} stroke={1.5} />}>
-                Delete account
-              </Menu.Item>
+              <Menu.Item leftSection={<IconLogout size={16} stroke={1.5} />}>Decconnexion</Menu.Item>
             </Menu.Dropdown>
           </Menu>
-        </Group>
-        </Container>
-    <Container size="md">
-          <Group gap={0} justify="flex-end" className={classes.mainLinks}>
-            {mainItems}
-          </Group>
-        <Burger
-          opened={opened}
-          onClick={toggle}
-          className={classes.burger}
-          size="sm"
-          hiddenFrom="sm"
-        />
+        </div>
       </Container>
-    </div>
+    <Container>
+        <Tabs defaultValue="traitement">
+          <Tabs.List>
+            <Tabs.Tab value="stage">
+              MES CONVENTIONS DE STAGE
+            </Tabs.Tab>
+            <Tabs.Tab value="traitement">
+              CONVENTIONS EN TRAITEMENT
+            </Tabs.Tab>
+          </Tabs.List>
+        </Tabs>
+      </Container>
+
+    </header>
   );
 }
