@@ -9,6 +9,7 @@ import { Anchor, Avatar, Container, Group, Tabs, Image, Menu, Text, UnstyledButt
 import { useDisclosure } from '@mantine/hooks';
 import AfpalogoURL from '../assets/logo/afpa_logo.png?url';
 import classes from '../module/css/NavBar.module.css';
+import axios from 'axios';
 
 const user = {
   name: 'Ice Cube',
@@ -17,30 +18,41 @@ const user = {
 };
 
 
-const mainLinks = [
-  { link: '#', label: 'Mes conventions de stage' },
-  { link: '#', label: 'Conventions en traitement' },
+const tabs = [
+  'MES CONVENTIONS',
+  'CONVENTIONS EN COURS DE TRAITEMENT',
 ];
+
+console.log(localStorage.getItem('userToken'));
+// Créer une instance d'Axios qui inclura automatiquement le token
+const apiClient = axios.create({
+  baseURL: 'http://127.0.0.1:8000/api',
+});
+
+// Utiliser un "intercepteur" pour ajouter l'en-tête à chaque requête
+apiClient.interceptors.request.use(config => {
+  const token = localStorage.getItem('userToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Maintenant, vous pouvez utiliser 'apiClient' pour faire des appels authentifiés
+export const fetchUserProfile = () => {
+  return apiClient.get('/me'); // Appel à notre future route protégée
+};
 
 export function NavBar() {
   const [opened, { toggle }] = useDisclosure(false);
   const [active, setActive] = useState(0);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
 
-  const mainItems = mainLinks.map((item, index) => (
-    <Anchor<'a'>
-
-      href={item.link}
-      key={item.label}
-      className={classes.mainLink}
-      data-active={index === active || undefined}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(index);
-      }}
-    >
-      {item.label}
-    </Anchor>
+  
+  const items = tabs.map((tab) => (
+    <Tabs.Tab value={tab} key={tab}>
+      {tab}
+    </Tabs.Tab>
   ));
 
   return (
@@ -77,16 +89,18 @@ export function NavBar() {
           </Menu>
         </div>
       </Container>
-    <Container>
-        <Tabs defaultValue="traitement">
-          <Tabs.List>
-            <Tabs.Tab value="stage">
-              MES CONVENTIONS DE STAGE
-            </Tabs.Tab>
-            <Tabs.Tab value="traitement">
-              CONVENTIONS EN TRAITEMENT
-            </Tabs.Tab>
-          </Tabs.List>
+    <Container size="md">
+        <Tabs
+          defaultValue="Home"
+          variant="outline"
+          visibleFrom="sm"
+          classNames={{
+            root: classes.tabs,
+            list: classes.tabsList,
+            tab: classes.tab,
+          }}
+        >
+          <Tabs.List>{items}</Tabs.List>
         </Tabs>
       </Container>
 
