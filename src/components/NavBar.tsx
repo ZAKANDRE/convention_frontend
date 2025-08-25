@@ -9,26 +9,30 @@ import { Anchor, Avatar, Container, Group, Menu, Text, UnstyledButton, Image, Ta
 import AfpalogoURL from '../assets/logo/afpa_logo.png?url';
 import classes from '../module/css/NavBar.module.css';
 import { TabsListBar } from './Tabs/TabsListBar.jsx';
-
-const user = {
-  name: 'Ice Cube',
-  email: 'janspoon@fighter.dev',
-  image: 'https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQ30PWuhimFsjTOcl7vjAQJFFkFi5m4PC8yl71hnQN-QJnX_2IZ0wUlJN3iIhke3RHOFSnaT3gnwYaqU5M',
-};
-
-
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.js';
 
 
 export function NavBar({news, activeTabId, onTabSelected }) {
-  const [opened, { toggle }] = useDisclosure(false);
+  const { user, isLoading } = useAuth();
   const [active, setActive] = useState(0);
   const [field, setField] = useState(0);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const navigate = useNavigate();
 
-  const mainItems = news.map((item, index) => (
-    <Anchor<'a'>
+  const handleTokenDelete = () => {
+    localStorage.removeItem('userToken');
+    navigate('/login');
+  };
 
+   const displayUser = {
+    name: user ? `${user.first_name} ${user.last_name}` : 'Invité',
+    formation: user ? `${user.formation.name}` : 'Aucune formation',
+  };
+
+  const mainItems = news.map((item, index) => (
+
+    <Anchor<'a'>
       href={item.link}
       key={item.label}
       className={classes.mainLink}
@@ -79,7 +83,7 @@ export function NavBar({news, activeTabId, onTabSelected }) {
                 <Menu.Item leftSection={<IconSettings size={16} stroke={1.5} />}>
                   Informations compte
                 </Menu.Item>
-                <Group onClick={hadleTokenDelete}>
+                <Group onClick={handleTokenDelete}>
                   <Menu.Item leftSection={<IconLogout size={16} stroke={1.5} />}>
                     <Text >Déconnexion</Text>
                   </Menu.Item>
@@ -114,7 +118,7 @@ export function NavBar({news, activeTabId, onTabSelected }) {
               tab: classes.tab,
             }}
           >
-            <Tabs.List>{items}</Tabs.List>
+            {/* <Tabs.List>{items}</Tabs.List> */}
           </Tabs>
         </Container>
       )}

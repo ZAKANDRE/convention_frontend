@@ -4,6 +4,7 @@ import { useDisclosure } from '@mantine/hooks';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+
 import { NavBar } from '../components/NavBar';
 import './HomePage.css';
 import 'bootstrap/dist/css/bootstrap.css';
