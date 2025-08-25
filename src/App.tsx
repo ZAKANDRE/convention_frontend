@@ -6,11 +6,13 @@ import { CreateAccount } from './pages/CreateAccount';
 import { Route, Routes } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import ProtectedRoutes from './components/ProtectedRoutes';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
     <>
       <MantineProvider>
+        <AuthProvider>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
@@ -19,6 +21,7 @@ function App() {
             <Route path="/home" element={<HomePage />} />
           </Route>
       </Routes>
+      </AuthProvider>
     </MantineProvider >
     </>
   )

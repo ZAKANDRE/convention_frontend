@@ -46,9 +46,6 @@ export function Login() {
       ...values,
     };
 
-    
-
-
     axios.post('http://127.0.0.1:8000/api/login_check', userPayload, {
       headers: {
         'Content-Type': 'application/ld+json'
