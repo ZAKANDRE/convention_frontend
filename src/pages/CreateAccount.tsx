@@ -114,12 +114,10 @@ export function CreateAccount() {
                         </GridCol>
                     </Grid>
                     
-                    {/* 4. Corrected props to match the updated initialValues */}
                     <FormationCombox
                         value={form.values.formation}
                         onChange={(value) => form.setFieldValue('formation', value || '')}
                     />
-                    
                     <TextInput
                         label="Courrier"
                         placeholder="votre@email.com"

@@ -5,8 +5,7 @@ import {
 } from '@tabler/icons-react';
 import cx from 'clsx';
 import { useState } from 'react';
-import { Anchor, Avatar, Container, Group, Tabs, Image, Menu, Text, UnstyledButton } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Anchor, Avatar, Container, Group, Menu, Text, UnstyledButton, Image, Tabs, Skeleton } from '@mantine/core';
 import AfpalogoURL from '../assets/logo/afpa_logo.png?url';
 import classes from '../module/css/NavBar.module.css';
 import { TabsListBar } from './Tabs/TabsListBar.jsx';
@@ -25,6 +24,7 @@ export function NavBar({news, activeTabId, onTabSelected }) {
   const [active, setActive] = useState(0);
   const [field, setField] = useState(0);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
+  const navigate = useNavigate();
 
   const mainItems = news.map((item, index) => (
     <Anchor<'a'>
@@ -47,33 +47,46 @@ export function NavBar({news, activeTabId, onTabSelected }) {
       <Container className={classes.mainSection}>
         <div className={classes.inner}>
           <Image src={AfpalogoURL} h={50} w="auto" />
-          <Menu
-            width={260}
-            position="bottom-end"
-            transitionProps={{ transition: 'pop-top-right' }}
-            onClose={() => setUserMenuOpened(false)}
-            onOpen={() => setUserMenuOpened(true)}
-            withinPortal
-          >
-            <Menu.Target>
-              <UnstyledButton
-                className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
-              >
-                <Group gap={7}>
-                  <Avatar src={user.image} alt={user.name} radius="xl" size={45} />
-                  <Text fw={500} size="sm" lh={1} mr={3}>
-                    {user.name}
-                  </Text>
-                  <IconChevronDown size={12} stroke={1.5} />
+
+          {user && (
+            <Menu
+              width={260}
+              position="bottom-end"
+              transitionProps={{ transition: 'pop-top-right' }}
+              onClose={() => setUserMenuOpened(false)}
+              onOpen={() => setUserMenuOpened(true)}
+              withinPortal
+            > <Group>
+              <Text fw={500} size="sm" lh={1} mr={3}>
+                  {displayUser.formation}
+                </Text>
+                <Menu.Target>
+                  <UnstyledButton
+                    className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
+                  >
+                    <Group gap={7}>
+                      <Text fw={500} size="sm" lh={1} mr={3}>
+                        {displayUser.name}
+                      </Text>
+                      <IconChevronDown size={12} stroke={1.5} />
+                    </Group>
+                  </UnstyledButton>
+                </Menu.Target>
+                
+              </Group>
+              <Menu.Dropdown>
+                <Menu.Label>Options</Menu.Label>
+                <Menu.Item leftSection={<IconSettings size={16} stroke={1.5} />}>
+                  Informations compte
+                </Menu.Item>
+                <Group onClick={hadleTokenDelete}>
+                  <Menu.Item leftSection={<IconLogout size={16} stroke={1.5} />}>
+                    <Text >Déconnexion</Text>
+                  </Menu.Item>
                 </Group>
-              </UnstyledButton>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Label>Options</Menu.Label>
-              <Menu.Item leftSection={<IconSettings size={16} stroke={1.5} />}>Informations compte</Menu.Item>
-              <Menu.Item leftSection={<IconLogout size={16} stroke={1.5} />}>Decconnexion</Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
+              </Menu.Dropdown>
+            </Menu>
+          )}
         </div>
       </Container>
     <Container>
@@ -88,6 +101,23 @@ export function NavBar({news, activeTabId, onTabSelected }) {
         </Tabs>
       </Container>
 
+      {/* N'afficher les onglets que si l'utilisateur est connecté */}
+      {user && (
+        <Container size="md">
+          <Tabs
+            defaultValue="MES CONVENTIONS"
+            variant="outline"
+            visibleFrom="sm"
+            classNames={{
+              root: classes.tabs,
+              list: classes.tabsList,
+              tab: classes.tab,
+            }}
+          >
+            <Tabs.List>{items}</Tabs.List>
+          </Tabs>
+        </Container>
+      )}
     </header>
   );
 }
