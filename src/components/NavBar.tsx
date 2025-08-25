@@ -9,6 +9,7 @@ import { Anchor, Avatar, Container, Group, Tabs, Image, Menu, Text, UnstyledButt
 import { useDisclosure } from '@mantine/hooks';
 import AfpalogoURL from '../assets/logo/afpa_logo.png?url';
 import classes from '../module/css/NavBar.module.css';
+import { TabsListBar } from './Tabs/TabsListBar.jsx';
 
 const user = {
   name: 'Ice Cube',
@@ -17,26 +18,24 @@ const user = {
 };
 
 
-const mainLinks = [
-  { link: '#', label: 'Mes conventions de stage' },
-  { link: '#', label: 'Conventions en traitement' },
-];
 
-export function NavBar() {
+
+export function NavBar({news, activeTabId, onTabSelected }) {
   const [opened, { toggle }] = useDisclosure(false);
   const [active, setActive] = useState(0);
+  const [field, setField] = useState(0);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
 
-  const mainItems = mainLinks.map((item, index) => (
+  const mainItems = news.map((item, index) => (
     <Anchor<'a'>
 
       href={item.link}
       key={item.label}
       className={classes.mainLink}
-      data-active={index === active || undefined}
+      data-active={item.id === activeTabId || undefined}
       onClick={(event) => {
         event.preventDefault();
-        setActive(index);
+        onTabSelected(item.id);
       }}
     >
       {item.label}
@@ -78,15 +77,14 @@ export function NavBar() {
         </div>
       </Container>
     <Container>
-        <Tabs defaultValue="traitement">
-          <Tabs.List>
-            <Tabs.Tab value="stage">
-              MES CONVENTIONS DE STAGE
-            </Tabs.Tab>
-            <Tabs.Tab value="traitement">
-              CONVENTIONS EN TRAITEMENT
-            </Tabs.Tab>
-          </Tabs.List>
+        <Tabs defaultValue={news.find((item) => item.id === activeTabId)?.value}
+              onChange={(value) => {
+                const selected = news.find((item) => item.value === value);
+                if (selected) {
+                  onTabSelected(selected.id);
+                }
+          }}>
+          <TabsListBar infos={news}/>
         </Tabs>
       </Container>
 
