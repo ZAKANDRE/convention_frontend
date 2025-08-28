@@ -9,6 +9,12 @@ import { useAuth } from '../context/AuthContext.js';
 import { IconCheck } from '@tabler/icons-react';
 /** personnal components* */
 import { NavBar } from '../components/NavBar';
+import {
+  getFormationName,
+  getUserFirstName,
+  getUserLastName,
+  extractSocietyId
+} from '../utils/dataFormatters';
 /** css files**/
 import './HomePage.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -246,56 +252,6 @@ const postSociety = async (conventionId: number) => {
     setError(err.message);
   }
 }
-const getFormationName = (formationId : number) =>{
-  const formation = getFormation[formationId];
-  if(formation){
-    return `${formation.name}`
-  }
-  return 'Téléchargement...';
-};
-const getSocietyName = (societyId: number) => {
-  const getSocietyName = getSociety[societyId];
-  if(getSocietyName){
-    return `${getSocietyName.name}`;
-  }
-  return 'Téléchargement...';
-};
-
-const getSocietyAdresse = (societyId: number) => {
-      const getSocietyAdresse = getSociety[societyId];
-      if(getSocietyAdresse){
-        return `${getSocietyAdresse.adresse}`;
-      }
-      return 'Téléchargement...';
-}
-const getSocietySiren = (societyId: number) => {
-      const getSocietySiren = getSociety[societyId];
-      if(getSocietySiren) {
-        return `${getSocietySiren.siren}`;
-      }
-      return 'Téléchargement...';
-}
-// console.log(getSocietyName(1));
-const getUserFirstName = (userId: number) => {
-  const userFName = user[userId];
-  if (userFName ) {
-    return `${userFName.first_name}`;
-  }
-  return 'Téléchargement...'; 
-};
-
-const getUserLastName = (userId: number) => {
-  const userLName = user[userId];
-  if (userLName ) {
-    return `${userLName.last_name}`;
-  }
-  return 'Téléchargement...'; 
-};
-const extractSocietyId = (row) => {
-  if (!row || !row.society || !row.society["@id"]) return null;
-  return row.society["@id"].replace('/api/societies/', '');
-};
-console.log(selectedRow);
   return (
     <AppShell header={{ height: 120 }} padding="md">
 
@@ -344,20 +300,20 @@ console.log(selectedRow);
             <tr key={row.id} data-fe={row.progress}>
              
                   <td>
-                    {getUserLastName(row.studentId)}  <br/>
-                    {getUserFirstName(row.studentId)} 
+                    {getUserLastName(row.studentId,user)}  <br/>
+                    {getUserFirstName(row.studentId, user)} 
                   </td>
                   <td>
-                    {getUserLastName(row.commanderId)} <br/>
-                    {getUserFirstName(row.commanderId)} 
+                    {getUserLastName(row.commanderId, user)} <br/>
+                    {getUserFirstName(row.commanderId, user)} 
 
                   </td>
                   <td>
-                    {getUserLastName(row.afpaDirectorId)}  <br/>
-                    {getUserFirstName(row.afpaDirectorId)} 
+                    {getUserLastName(row.afpaDirectorId, user)}  <br/>
+                    {getUserFirstName(row.afpaDirectorId,user)} 
                   </td>
                   <td>
-                   {getFormationName(row.formationId)} 
+                   {getFormationName(row.formationId, getFormation)} 
                   </td>
                   <td>
                     <Button variant="info" onClick={() => { handleShow(row.id); handleShowSociety() }} className='me-3' >
