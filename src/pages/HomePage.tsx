@@ -8,12 +8,13 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Table from 'react-bootstrap/Table';
+
 import { NavBar } from '../components/NavBar';
 import { useAuth } from '../context/AuthContext.js';
 import Accordion from 'react-bootstrap/Accordion';
 import { ActionIcon, RingProgress, Text, Center } from '@mantine/core';
 import { IconCheck } from '@tabler/icons-react';
-import Table from 'react-bootstrap/Table';
 import './HomePage.css';
 import 'bootstrap/dist/css/bootstrap.css';
 export function HomePage() {
@@ -83,7 +84,7 @@ const fetchDate =  async () => {
           { id: 2, link: '#', label: 'Conventions en traitement', value: 'traitement', rows: rows },
         ]);
 };
-const putMethod = async (link, st_id, cne_id,dir_id, form_id, d_st, d_end, soc_link, s_row, progress ) => {
+const putMethod = async (link, st_id, cne_id,dir_id, form_id, d_st, d_end, soc_link, s_row, progress?:number ) => {
     try {const updateSocietyConvention = await fetch (`${link}`,{
           method: 'PUT',
           headers: {
@@ -176,8 +177,7 @@ const postConvention = async () => {
             dateStart: inputDateStart,
             dateEnd: inputDateEnd,
             users: [],
-            society: "/api/societies/3",
-            progress: 25
+            society: "/api/societies/3"
         })
       });
       if(!conventionPost.ok){
@@ -241,7 +241,7 @@ const postSociety = async (conventionId: number) => {
               selectedRow.dateEnd, 
               `/api/societies/${createdSocietyId}`, 
               selectedRow, 
-              1) ;
+              selectedRow.progress) ;
 
   } catch (err:any){
     setError(err.message);
@@ -361,7 +361,7 @@ console.log(selectedRow);
                    {getFormationName(row.formationId)} 
                   </td>
                   <td>
-                    <Button variant="info" onClick={() => { handleShow(row.id); handleShowSociety() /*handleShowSociety() handleShowSociety() */}} >
+                    <Button variant="info" onClick={() => { handleShow(row.id); handleShowSociety() }} className='me-3' >
                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" className="bi bi-eye-fill" viewBox="0 0 16 16">
                         <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
                         <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
@@ -540,7 +540,7 @@ console.log(selectedRow);
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Modal title</Modal.Title>
+          <Modal.Title>Ajoutez les données de l'entreprise!</Modal.Title>
         </Modal.Header>
         <Modal.Body>
  <Form onSubmit={(e) => {
@@ -576,17 +576,19 @@ console.log(selectedRow);
                                       setAddSocietyNumber(event.target.value);
                                   }} />
                   </Form.Group>
-                  <Button type="submit">Envoyer</Button>
-
-                </Form>
-          
-        </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseAddSociety}>
-            Close
+          <Button type="submit" onClick={()=> handleCloseAddSociety()}>
+           AJOUTER                        
           </Button>
-          <Button variant="primary">Understood</Button>
+          <Button variant="secondary" onClick={handleCloseAddSociety}>
+            CLOSE
+          </Button>
+          
+
         </Modal.Footer>
+                </Form>
+        </Modal.Body>
+        
       </Modal>
       
                     
@@ -597,14 +599,14 @@ console.log(selectedRow);
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Modal title</Modal.Title>
+          <Modal.Title>L'info d'entreprise!</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           
-            {selectedRow ? (
+            {selectedRow && (selectedRow.society.name !=="")? (
             <>
               <Form>
-                {console.log(selectedRow.id)}
+                {/* {console.log(selectedRow.society)} */}
                 <Form.Group className="mb-3">
                   <Form.Label>Nom</Form.Label>
                   {/* <Form.Control type="text" value={selectedRow.society?.name || ''} disabled /> */}
@@ -618,36 +620,16 @@ console.log(selectedRow);
                   <Form.Label>SIREN</Form.Label>
                   <Form.Control type="text" value={selectedRow.siren} disabled />
                 </Form.Group>
-                 <Button type="submit">Submit form</Button>
               </Form>
-      <Accordion >
-        <Accordion.Item eventKey="0">
-          <Accordion.Header>
-              <Button variant="success">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-building-fill-add" viewBox="0 0 16 16">
-                  <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0"/>
-                  <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7.256A4.5 4.5 0 0 0 12.5 8a4.5 4.5 0 0 0-3.59 1.787A.5.5 0 0 0 9 9.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .39-.187A4.5 4.5 0 0 0 8.027 12H6.5a.5.5 0 0 0-.5.5V16H3a1 1 0 0 1-1-1zm2 1.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3 0v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
-                </svg>
-                Rajouter
-              </Button>
-            </Accordion.Header>
-          <Accordion.Body>
-           
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
              
                 </>) : (
-              <p>Aucune donnée sélectionnée1</p>
+              <p className='text-center'>
+                Aucune information relative à l'entreprise <br/> n'est disponible pour le moment!
+              </p>
             
             )}
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseSociety}>
-            Close
-          </Button>
-          <Button variant="primary">Understood</Button>
-        </Modal.Footer>
+    
       </Modal>
   
          <Modal show={showModal} onHide={handleCloseModal}>

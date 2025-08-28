@@ -26,3 +26,6 @@ tr td{
 .ring{
     margin: 0 auto;
 }
+.modal-footer{
+    justify-content: space-between !important;
+}
