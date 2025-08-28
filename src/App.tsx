@@ -18,7 +18,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/create-account" element={<CreateAccount />} />
           <Route element={<ProtectedRoutes />}>
-            <Route path="/home" element={<HomePage />} />
+            <Route path="/home" id='j' element={<HomePage />} />
           </Route>
       </Routes>
       </AuthProvider>

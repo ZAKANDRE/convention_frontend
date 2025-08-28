@@ -8,7 +8,7 @@ const AuthContext = createContext(null);
 
 // 2. Create the AuthProvider Component
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -18,7 +18,7 @@ export function AuthProvider({ children }) {
       const token = localStorage.getItem('userToken');
 
       if (!token) {
-        setUser(null);
+        setUserInfo(null);
         setIsLoading(false);
         return;
       }
@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
           },
         });
 
-        setUser(response.data);
+        setUserInfo(response.data);
       } catch (err) {
         // Handle errors, e.g., token expired
         console.error("Failed to fetch user:", err);
@@ -49,10 +49,10 @@ export function AuthProvider({ children }) {
   }, []); 
 
   const value = useMemo(() => ({
-    user,
+    userInfo,
     isLoading,
     error,
-  }), [user, isLoading, error]);
+  }), [userInfo, isLoading, error]);
 
   return (
     <AuthContext.Provider value={value}>

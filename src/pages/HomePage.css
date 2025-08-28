@@ -1,3 +1,28 @@
 body div.offcanvas-top{
     height: fit-content!important;
 }
+
+.accordion-item{
+    /* border: 0px!important; */
+}
+
+.accordion{ 
+    width: 30%;
+}
+.action-group-btn button {
+    margin: 0 0 0 10px;
+}
+#group-btn{
+    padding: 0;
+}
+td button.delete-btn {
+    margin: 0!important;
+}
+tr td{
+    padding: 10px 1% 10px 1%!important;
+    text-align: center;
+    vertical-align: middle;
+}
+.ring{
+    margin: 0 auto;
+}
