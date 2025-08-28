@@ -1,23 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { AppShell } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Offcanvas from 'react-bootstrap/Offcanvas';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Table from 'react-bootstrap/Table';
-
-import { NavBar } from '../components/NavBar';
+import { useState, useEffect } from 'react';
+/* bootstrap import */
+import {Form, Button, Modal, Container, Row, Col, Table } from 'react-bootstrap';
+/* Mantine import */
+import { AppShell, ActionIcon, RingProgress, Text, Center } from '@mantine/core';
+/** checkin component* */
 import { useAuth } from '../context/AuthContext.js';
-import Accordion from 'react-bootstrap/Accordion';
-import { ActionIcon, RingProgress, Text, Center } from '@mantine/core';
+/** another components* */
 import { IconCheck } from '@tabler/icons-react';
+/** personnal components* */
+import { NavBar } from '../components/NavBar';
+/** css files**/
 import './HomePage.css';
 import 'bootstrap/dist/css/bootstrap.css';
+
 export function HomePage() {
+
   const [mainLinks, setMainLinks] = useState([
     { id: 1, link: '#', label: 'Mes conventions de stage', value: 'stage', rows: [] },
     { id: 2, link: '#', label: 'Conventions en traitement', value: 'traitement', rows: [] },
@@ -68,6 +65,7 @@ export function HomePage() {
 
   const handleCloseSociety = () => setShowSociety(false);
   const handleShowSociety = () => setShowSociety(true);
+
   /** Modal add Society**/
   const [showAddSociety, setShowAddSociety] = useState(false);
 
@@ -84,6 +82,7 @@ const fetchDate =  async () => {
           { id: 2, link: '#', label: 'Conventions en traitement', value: 'traitement', rows: rows },
         ]);
 };
+
 const putMethod = async (link, st_id, cne_id,dir_id, form_id, d_st, d_end, soc_link, s_row, progress?:number ) => {
     try {const updateSocietyConvention = await fetch (`${link}`,{
           method: 'PUT',
@@ -114,7 +113,7 @@ const putMethod = async (link, st_id, cne_id,dir_id, form_id, d_st, d_end, soc_l
       }
 
     };
-  useEffect(() => {
+useEffect(() => {
      ( async () => {
       try {
         fetchDate().catch(err => {
@@ -618,7 +617,7 @@ console.log(selectedRow);
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>SIREN</Form.Label>
-                  <Form.Control type="text" value={selectedRow.siren} disabled />
+                  <Form.Control type="text" value={selectedRow.society.siren} disabled />
                 </Form.Group>
               </Form>
              
