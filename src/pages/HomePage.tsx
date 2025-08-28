@@ -15,6 +15,7 @@ import {
   getUserLastName,
   extractSocietyId
 } from '../utils/dataFormatters';
+import { ProgressCheckButton } from '../components/ProgressCheckButton/ProgressCheckButton.tsx'
 /** css files**/
 import './HomePage.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -25,7 +26,14 @@ export function HomePage() {
     { id: 1, link: '#', label: 'Mes conventions de stage', value: 'stage', rows: [] },
     { id: 2, link: '#', label: 'Conventions en traitement', value: 'traitement', rows: [] },
   ]);
-
+ const chiffre = [{
+    id : 1,
+    name : '33'
+ },
+{
+    id : 2,
+    name : '55'
+ }];
   /** Get data from modal input**/
   const [inputDateStart, setinputDateStart] = useState('');
   const [inputDateEnd, setinputDateEnd] = useState('');
@@ -77,6 +85,27 @@ export function HomePage() {
 
   const handleCloseAddSociety = () => setShowAddSociety(false);
   const handleShowAddSociety = () => setShowAddSociety(true);
+
+  /** Update Ring variables **/
+  const updateRing = (row) => (e) => {
+  const value = Number(e.currentTarget.getAttribute('data-value')); 
+  const socId = extractSocietyId(row);
+  putMethod(
+    `http://127.0.0.1:8000/api/conventions/${row.id}`,
+    row.studentId,
+    row.commanderId,
+    row.afpaDirectorId,
+    row.formationId,
+    row.dateStart,
+    row.dateEnd, 
+    `/api/societies/${socId}`, 
+    row,
+    value
+  );
+};  
+  const ringValues = [{ id: 1, value: 25},{id: 2, value: 50},{id: 3,value: 75},{id: 4,value: 100}];
+
+
 
 const fetchDate =  async () => {
         const res = await fetch('http://127.0.0.1:8000/api/conventions');
@@ -182,7 +211,8 @@ const postConvention = async () => {
             dateStart: inputDateStart,
             dateEnd: inputDateEnd,
             users: [],
-            society: "/api/societies/3"
+            society: "/api/societies/3",
+            progress: 0
         })
       });
       if(!conventionPost.ok){
@@ -190,7 +220,6 @@ const postConvention = async () => {
       }
       const data = await conventionPost.json();
       fetchDate();
-
       handleCloseModal();
       }catch (err: any) {
         setError(err.message);
@@ -276,8 +305,7 @@ const postSociety = async (conventionId: number) => {
               </Row>
         </Container>
  
-           <Table striped responsive bordered  hover>
-
+  <Table striped responsive bordered  hover>
       <thead>
         <tr className='text-center'>
           <th>Stagiaire</th>
@@ -292,48 +320,53 @@ const postSociety = async (conventionId: number) => {
           <th>Suppresion</th>
         </tr>
       </thead>
-         <tbody>
-
-              {activeTab?.rows
+      <tbody>
+      {activeTab?.rows
               .filter(row => row.studentId === userInfo.id)
               .map(row => (
             <tr key={row.id} data-fe={row.progress}>
-             
-                  <td>
-                    {getUserLastName(row.studentId,user)}  <br/>
-                    {getUserFirstName(row.studentId, user)} 
+                  <td> 
+                      {getUserLastName(row.studentId,user)}<br/>{getUserFirstName(row.studentId, user)} 
+                  </td>
+                  <td> 
+                      {getUserLastName(row.commanderId, user)} <br/> {getUserFirstName(row.commanderId, user)} 
                   </td>
                   <td>
-                    {getUserLastName(row.commanderId, user)} <br/>
-                    {getUserFirstName(row.commanderId, user)} 
-
+                      {getUserLastName(row.afpaDirectorId, user)}  <br/> {getUserFirstName(row.afpaDirectorId,user)} 
                   </td>
                   <td>
-                    {getUserLastName(row.afpaDirectorId, user)}  <br/>
-                    {getUserFirstName(row.afpaDirectorId,user)} 
+                      {getFormationName(row.formationId, getFormation)} 
                   </td>
                   <td>
-                   {getFormationName(row.formationId, getFormation)} 
-                  </td>
-                  <td>
-                    <Button variant="info" onClick={() => { handleShow(row.id); handleShowSociety() }} className='me-3' >
-                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" className="bi bi-eye-fill" viewBox="0 0 16 16">
-                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
-                      </svg>
+                      <Button variant="info" onClick={() => { handleShow(row.id); handleShowSociety() }} className='me-3' >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" className="bi bi-eye-fill" viewBox="0 0 16 16">
+                          <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                          <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                        </svg>
+                      </Button>
+                      <Button variant="success" onClick={()=> { handleShowAddSociety()}}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-building-fill-add" viewBox="0 0 16 16">
+                          <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0"/>
+                          <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7.256A4.5 4.5 0 0 0 12.5 8a4.5 4.5 0 0 0-3.59 1.787A.5.5 0 0 0 9 9.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .39-.187A4.5 4.5 0 0 0 8.027 12H6.5a.5.5 0 0 0-.5.5V16H3a1 1 0 0 1-1-1zm2 1.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3 0v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+                        </svg>
                     </Button>
-                    <Button variant="success" onClick={()=> { handleShowAddSociety()}}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-building-fill-add" viewBox="0 0 16 16">
-                      <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0"/>
-                      <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7.256A4.5 4.5 0 0 0 12.5 8a4.5 4.5 0 0 0-3.59 1.787A.5.5 0 0 0 9 9.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .39-.187A4.5 4.5 0 0 0 8.027 12H6.5a.5.5 0 0 0-.5.5V16H3a1 1 0 0 1-1-1zm2 1.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3 0v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
-                    </svg>
-
-                  </Button>
                   </td>
-                  <td>{new Date(row.dateStart).toLocaleDateString()}</td>
-                  <td>{new Date(row.dateEnd).toLocaleDateString()}</td>
                   <td>
-                    {['radio'].map((type) => (
+                      {new Date(row.dateStart).toLocaleDateString()}
+                  </td>
+                  <td>
+                      {new Date(row.dateEnd).toLocaleDateString()}
+                  </td>
+                  <td>
+                    {ringValues.map(val => (
+                      <ProgressCheckButton  
+                      key={val.id}
+                      digitValue={val.value} 
+                      updateProgress={updateRing(row)} 
+                      btn_txt={val.value}/> 
+                    ))}
+
+        {['radio'].map((type) => (
         <div key={`inline-${type}`} className="mb-3" key={row.id}>
         <Form onSubmit={(e) => {
               e.preventDefault();
@@ -488,7 +521,8 @@ const postSociety = async (conventionId: number) => {
             </tbody>
 
           </Table>
- <Modal
+
+      <Modal
         show={showAddSociety}
         onHide={handleCloseAddSociety}
         backdrop="static"
@@ -498,7 +532,7 @@ const postSociety = async (conventionId: number) => {
           <Modal.Title>Ajoutez les données de l'entreprise!</Modal.Title>
         </Modal.Header>
         <Modal.Body>
- <Form onSubmit={(e) => {
+        <Form onSubmit={(e) => {
                   e.preventDefault();
                   postSociety(selectedRow.id);
                 }}>
@@ -547,7 +581,7 @@ const postSociety = async (conventionId: number) => {
       </Modal>
       
                     
- <Modal
+      <Modal
         show={showSociety}
         onHide={handleCloseSociety}
         backdrop="static"
@@ -617,7 +651,7 @@ const postSociety = async (conventionId: number) => {
               Fermer
             </Button>
             <Button variant="primary" 
-                    onClick={postConvention}> 
+                    onClick={()=> postConvention()}> 
               Créer
             </Button>
           </Modal.Footer>
