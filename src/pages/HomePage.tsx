@@ -25,7 +25,7 @@ import {
   updateRing
 } from '../api/conventionsApi';
 import { postSociety } from '../api/societyApi';
-
+import { fetchAllUsers, fetchAllFormation, fetchAllSocieties } from '../api/useffects.js';
 /** css files**/
 import './HomePage.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -36,14 +36,7 @@ export function HomePage() {
     { id: 1, link: '#', label: 'Mes conventions de stage', value: 'stage', rows: [] },
     { id: 2, link: '#', label: 'Conventions en traitement', value: 'traitement', rows: [] },
   ]);
- const chiffre = [{
-    id : 1,
-    name : '33'
- },
-{
-    id : 2,
-    name : '55'
- }];
+
   /** Get data from modal input**/
   const [inputDateStart, setinputDateStart] = useState('');
   const [inputDateEnd, setinputDateEnd] = useState('');
@@ -99,43 +92,20 @@ export function HomePage() {
 
 
 useEffect(() => {
-     ( async () => {
-      try {
-        fetchDate(setMainLinks).catch(err => {
-        console.error(err);
-      });
-
+  (async () => {
+    try {
+      await fetchDate(setMainLinks);
       
+      await fetchAllUsers('http://127.0.0.1:8000/api/users', setUser);
+      await fetchAllFormation('http://127.0.0.1:8000/api/formations?page=1', setGetFormation);
+      await fetchAllSocieties('http://127.0.0.1:8000/api/societies', setGetSociety);
       
-      const formation  = await fetch('http://127.0.0.1:8000/api/formations?page=1');
-      if(!formation.ok) throw new Error('Erreur fetch formation');
-      const dataFormation = await formation.json();
-      const infoFormation = dataFormation.member;
-      const formationDataObj = infoFormation.reduce((formationArray, item) => {
-          formationArray[item.id] = item;
-          return formationArray;
-      },{});
-
-      setGetFormation(formationDataObj);
-   
-   
-      const society1 = await fetch('http://127.0.0.1:8000/api/societies');
-      if(!society1.ok) throw new Error ('Erreur fetch society');
-      const dataSociety = await society1.json();
-      const check = dataSociety.member;
-
-      const societyDataObj = check.reduce((formationArray, item) => {
-          formationArray[item.id] = item;
-          return formationArray;
-      },{});
-
-      setGetSociety(societyDataObj);
-
-      } catch (err: any) {
-        setError(err.message);
-      }
-    })();
-  }, []);
+    } catch (err: any) {
+      console.error('Ошибка загрузки данных:', err);
+      setError(err.message);  
+    }
+  })();
+}, []);
 
 
   return (
