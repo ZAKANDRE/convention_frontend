@@ -1,4 +1,4 @@
-import { Button} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 
 export const ProgressCheckButton = ({digitValue, updateProgress, btn_txt}) => {
 
@@ -11,5 +11,3 @@ export const ProgressCheckButton = ({digitValue, updateProgress, btn_txt}) => {
             </Button>
   );
 };         
-
-

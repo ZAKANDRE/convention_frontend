@@ -12,10 +12,20 @@ import { NavBar } from '../components/NavBar';
 import {
   getFormationName,
   getUserFirstName,
-  getUserLastName,
-  extractSocietyId
+  getUserLastName
 } from '../utils/dataFormatters';
-import { ProgressCheckButton } from '../components/ProgressCheckButton/ProgressCheckButton.tsx'
+import { ProgressCheckButton } from '../components/ProgressCheckButton/ProgressCheckButton'
+import { Window } from '../components/Window/Window'
+
+import {
+  fetchDate,
+  putMethod,
+  postConvention,
+  deleteConvention,
+  updateRing
+} from '../api/conventionsApi';
+import { postSociety } from '../api/societyApi';
+
 /** css files**/
 import './HomePage.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -43,10 +53,6 @@ export function HomePage() {
   const [addSocietyName,setAddSocietyName] = useState('');
   const [addSocietyAdresse,setAddSocietyAdresse] = useState('');
   const [addSocietyNumber, setAddSocietyNumber] = useState('');
-  const [progressValue, setProgressValue] = useState('');
-  const [progressValue2, setProgressValue2] = useState('');
-  const [progressValue3, setProgressValue3] = useState('');
-  const [progressValue4, setProgressValue4] = useState('');
   /** fin Add society form**/
 
   const [activeTabId, setActiveTabId] = useState(1);
@@ -87,84 +93,19 @@ export function HomePage() {
   const handleShowAddSociety = () => setShowAddSociety(true);
 
   /** Update Ring variables **/
-  const updateRing = (row) => (e) => {
-  const value = Number(e.currentTarget.getAttribute('data-value')); 
-  const socId = extractSocietyId(row);
-  putMethod(
-    `http://127.0.0.1:8000/api/conventions/${row.id}`,
-    row.studentId,
-    row.commanderId,
-    row.afpaDirectorId,
-    row.formationId,
-    row.dateStart,
-    row.dateEnd, 
-    `/api/societies/${socId}`, 
-    row,
-    value
-  );
-};  
+
   const ringValues = [{ id: 1, value: 25},{id: 2, value: 50},{id: 3,value: 75},{id: 4,value: 100}];
 
 
 
-const fetchDate =  async () => {
-        const res = await fetch('http://127.0.0.1:8000/api/conventions');
-        if (!res.ok) throw new Error('Erreur fetch convention');
-        const data = await res.json();
-        const rows = data.member;
-         setMainLinks([
-          { id: 1, link: '#', label: 'Mes conventions de stage', value: 'stage', rows: rows },
-          { id: 2, link: '#', label: 'Conventions en traitement', value: 'traitement', rows: rows },
-        ]);
-};
-
-const putMethod = async (link, st_id, cne_id,dir_id, form_id, d_st, d_end, soc_link, s_row, progress?:number ) => {
-    try {const updateSocietyConvention = await fetch (`${link}`,{
-          method: 'PUT',
-          headers: {
-              'Accept' : 'application/ld+json',
-              'Content-Type' : 'application/ld+json; charset=UTF-8'
-          },
-          body: JSON.stringify({
-              studentId: st_id,
-              commanderId: cne_id,
-              afpaDirectorId: dir_id,
-              formationId: form_id,
-              dateStart: d_st,
-              dateEnd: d_end,
-              users: s_row.users || [],
-              society: `${soc_link}`,
-              progress: progress
-          })
-        });
-        if(!updateSocietyConvention.ok){
-          throw new Error (`${updateSocietyConvention.status}`);
-        }
-        const updatedData = await updateSocietyConvention.json();
-        fetchDate();
-        } catch (error) {
-        console.error('PUT method error:', error);
-        throw error;
-      }
-
-    };
 useEffect(() => {
      ( async () => {
       try {
-        fetchDate().catch(err => {
+        fetchDate(setMainLinks).catch(err => {
         console.error(err);
       });
 
-        const res1 = await fetch('http://127.0.0.1:8000/api/users');
-        if (!res1.ok) throw new Error('Erreur téléchargement users');
-        const data1 = await res1.json();
-        const rows1 = data1.member;
-
-        const usersData = rows1.reduce((acc, item) => {
-          acc[item.id] = item;
-          return acc;
-        }, {});
-      setUser(usersData);
+      
       
       const formation  = await fetch('http://127.0.0.1:8000/api/formations?page=1');
       if(!formation.ok) throw new Error('Erreur fetch formation');
@@ -195,92 +136,8 @@ useEffect(() => {
       }
     })();
   }, []);
-const postConvention = async () => {
-  try {
-  const conventionPost = await fetch('http://127.0.0.1:8000/api/conventions', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/ld+json',
-          'Content-Type': 'application/ld+json;charset=UTF-8'
-        },
-        body: JSON.stringify({
-            studentId: userInfo.id,
-            commanderId: 1,
-            afpaDirectorId: 2,
-            formationId: userInfo.formation.id,
-            dateStart: inputDateStart,
-            dateEnd: inputDateEnd,
-            users: [],
-            society: "/api/societies/3",
-            progress: 0
-        })
-      });
-      if(!conventionPost.ok){
-        throw new Error(`Erreur POST: '  ${conventionPost.status}`);
-      }
-      const data = await conventionPost.json();
-      fetchDate();
-      handleCloseModal();
-      }catch (err: any) {
-        setError(err.message);
-      }
-}
-const deleteConvention = async(conventionId: number) => {
-  try{
-    const deleteConv = await fetch(`http://127.0.0.1:8000/api/conventions/${conventionId}`, {
-      method: 'DELETE',
-      headers: {
-        'Accept' : 'application/ld+json'
-      }
-    });
-    await fetchDate();
-    if(!deleteConv.ok){
-      throw new Error(`HTTP error! Status: ${deleteConv.status}`);
-    }
-  } catch(err:any){
-      setError(`HTTP error! Status: ${err.status}`);
-  }
-}
-const postSociety = async (conventionId: number) => {
-  try{
-      const newSociety = await fetch('http://127.0.0.1:8000/api/societies',{
-      method: 'POST',
-      headers: {
-        'Accept': 'application/ld+json',
-        'Content-Type' : 'application/ld+json; charset=UTF-8'
-      },
-      body : JSON.stringify({
-          name: addSocietyName,
-          adresse: addSocietyAdresse,
-          siren: parseInt(addSocietyNumber)
-      })
-    });
-   if (!newSociety.ok) {
-      const errorText = await newSociety.text();
-      console.error('Server error response:', errorText);
-      throw new Error(`Error POST society: ${newSociety.status} - ${errorText}`);
-    }
-    const data = await newSociety.json();
-    const createdSocietyId = data.id;
-    console.log(conventionId, createdSocietyId)
-    
-    
-    await putMethod(
-              `http://127.0.0.1:8000/api/conventions/${conventionId}`,
-              selectedRow.studentId,
-              selectedRow.commanderId,
-              selectedRow.afpaDirectorId,
-              selectedRow.formationId,
-              selectedRow.dateStart,
-              selectedRow.dateEnd, 
-              `/api/societies/${createdSocietyId}`, 
-              selectedRow, 
-              selectedRow.progress) ;
 
-  } catch (err:any){
-    setError(err.message);
-  }
-}
+
   return (
     <AppShell header={{ height: 120 }} padding="md">
 
@@ -344,7 +201,7 @@ const postSociety = async (conventionId: number) => {
                           <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
                         </svg>
                       </Button>
-                      <Button variant="success" onClick={()=> { handleShowAddSociety()}}>
+                      <Button variant="success" onClick={()=> {  handleShow(row.id);      handleShowAddSociety()}}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-building-fill-add" viewBox="0 0 16 16">
                           <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0"/>
                           <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7.256A4.5 4.5 0 0 0 12.5 8a4.5 4.5 0 0 0-3.59 1.787A.5.5 0 0 0 9 9.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .39-.187A4.5 4.5 0 0 0 8.027 12H6.5a.5.5 0 0 0-.5.5V16H3a1 1 0 0 1-1-1zm2 1.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3 0v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
@@ -358,183 +215,86 @@ const postSociety = async (conventionId: number) => {
                       {new Date(row.dateEnd).toLocaleDateString()}
                   </td>
                   <td>
-                    {ringValues.map(val => (
-                      <ProgressCheckButton  
-                      key={val.id}
-                      digitValue={val.value} 
-                      updateProgress={updateRing(row)} 
-                      btn_txt={val.value}/> 
-                    ))}
-
-        {['radio'].map((type) => (
-        <div key={`inline-${type}`} className="mb-3" key={row.id}>
-        <Form onSubmit={(e) => {
-              e.preventDefault();
-          }}>
-          <Form.Check 
-            inline
-            value={25}
-            onChange={
-              (e) => {
-                const socId = extractSocietyId(row);
-                putMethod(
-                  `http://127.0.0.1:8000/api/conventions/${row.id}`,
-                  row.studentId,
-                  row.commanderId,
-                  row.afpaDirectorId,
-                  row.formationId,
-                  row.dateStart,
-                  row.dateEnd, 
-                  `/api/societies/${socId}`, 
-                  row,
-                  Number(e.target.value)
-                );
-              }
-            }
-            disabled={!userInfo.roles.includes('ROLE_STUDENT')}
-            name="group1"
-            type={type}
-            id={`inline-${type}-1`}
-          />
-          <Form.Check
-            inline
-            // disabled={!userInfo.roles.includes('ROLE_СAPITAINE')}
-            value={50}
-            onChange={
-              (e) => {
-                const socId = extractSocietyId(row);
-                putMethod(
-                  `http://127.0.0.1:8000/api/conventions/${row.id}`,
-                  row.studentId,
-                  row.commanderId,
-                  row.afpaDirectorId,
-                  row.formationId,
-                  row.dateStart,
-                  row.dateEnd, 
-                  `/api/societies/${socId}`, 
-                  row,
-                  Number(e.target.value)
-                );
-              }
-            }
-            name="group1"
-            type={type}
-            id={`inline-${type}-2`}
-          /> <br />
-          <Form.Check 
-            inline
-            // disabled={!userInfo.roles.includes('ROLE_DIRECTOR')}
-            value={75}
-            onChange={
-              (e) => {
-                setProgressValue3(e.target.value);
-                const socId = extractSocietyId(row);
-                putMethod(
-                  `http://127.0.0.1:8000/api/conventions/${row.id}`,
-                  row.studentId,
-                  row.commanderId,
-                  row.afpaDirectorId,
-                  row.formationId,
-                  row.dateStart,
-                  row.dateEnd, 
-                  `/api/societies/${socId}`, 
-                  row,
-                  Number(e.target.value)
-                );
-              }
-            }
-            name="group1"
-            type={type}
-            id={`inline-${type}-3`}
-          />
-          <Form.Check 
-            inline
-            // disabled={!userInfo.roles.includes('ROLE_DIRECTOR')}
-            value={100}
-            onChange={
-              (e) => {
-                const socId = extractSocietyId(row);
-                putMethod(
-                  `http://127.0.0.1:8000/api/conventions/${row.id}`,
-                  row.studentId,
-                  row.commanderId,
-                  row.afpaDirectorId,
-                  row.formationId,
-                  row.dateStart,
-                  row.dateEnd, 
-                  `/api/societies/${socId}`, 
-                  row,
-                  Number(e.target.value)
-                );
-              }
-            }
-            name="group1"
-            type={type}
-            id={`inline-${type}-4`}
-          />
-        </Form> 
-        </div>
-      ))}
+                      {ringValues.map(val => (
+                        <ProgressCheckButton  
+                              key={val.id}
+                              digitValue={val.value} 
+                              updateProgress={updateRing(row, setMainLinks)} 
+                              btn_txt={val.value}
+                        /> 
+                      ))}
                   </td>
                   <td>
+                    {row.progress !== 100 && (
+                      <RingProgress
+                          className='ring'
+                          sections={[{ value: row.progress, color: 'blue' }]}
+                          transitionDuration={1000}
+                          label={
+                            <Text c="blue" fw={700} ta="center" size="xl">
+                              {row.progress}%
+                            </Text>
+                          }
+                        />
+                      )}
 
-                  {row.progress !== 100 && (
-                    <RingProgress
+                    {row.progress === 100 && (
+                      <RingProgress
                         className='ring'
-                        sections={[{ value: row.progress, color: 'blue' }]}
-                        transitionDuration={1000}
+                        sections={[{ value: 100, color: 'teal' }]}
+                          transitionDuration={1000}
+
                         label={
-                          <Text c="blue" fw={700} ta="center" size="xl">
-                            {row.progress}%
-                          </Text>
+                          <Center>
+                            <ActionIcon color="teal" variant="light" radius="xl" size="xl">
+                              <IconCheck size={22} />
+                            </ActionIcon>
+                          </Center>
                         }
-                      />
-                    )}
-
-                  {row.progress === 100 && (
-                    <RingProgress
-                      className='ring'
-                      sections={[{ value: 100, color: 'teal' }]}
-                        transitionDuration={1000}
-
-                      label={
-                        <Center>
-                          <ActionIcon color="teal" variant="light" radius="xl" size="xl">
-                            <IconCheck size={22} />
-                          </ActionIcon>
-                        </Center>
-                      }
-                     /> 
-                     )}
+                      /> 
+                      )}
                   </td>
                   <td>
                      <button type="button" className="btn btn-danger offset-11 mb-3 text-uppercase delete-btn" 
-                            onClick={()=> {deleteConvention(row.id)}}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-folder-minus" viewBox="0 0 16 16">
-                          <path d="m.5 3 .04.87a2 2 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2m5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19q-.362.002-.683.12L1.5 2.98a1 1 0 0 1 1-.98z"/>
-                          <path d="M11 11.5a.5.5 0 0 1 .5-.5h4a.5.5 0 1 1 0 1h-4a.5.5 0 0 1-.5-.5"/>
-                        </svg>
-                    </button>
+                            onClick={()=> {
+                              deleteConvention(row.id,setError, setMainLinks)}}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-folder-minus" viewBox="0 0 16 16">
+                                  <path d="m.5 3 .04.87a2 2 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2m5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19q-.362.002-.683.12L1.5 2.98a1 1 0 0 1 1-.98z"/>
+                                  <path d="M11 11.5a.5.5 0 0 1 .5-.5h4a.5.5 0 1 1 0 1h-4a.5.5 0 0 1-.5-.5"/>
+                                </svg>
+                            </button>
                   </td>
                 </tr>
               ))}
             </tbody>
+    </Table>
 
-          </Table>
-
-      <Modal
-        show={showAddSociety}
-        onHide={handleCloseAddSociety}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Ajoutez les données de l'entreprise!</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <Form onSubmit={(e) => {
+    <Window
+          show={showAddSociety}
+          onHide={handleCloseAddSociety}
+          backdrop={'static'}  
+          keyboard={true} 
+          headerTitle={'Ajoutez les données de l\'entreprise.'}
+          footerButtons={[
+            { text: 'AJOUTER', type: 'submit', variant: 'primary', onClick: () => {
+              postSociety( addSocietyName,
+                          addSocietyAdresse,
+                          addSocietyNumber,
+                          selectedRow,
+                          selectedRow.id,
+                          setMainLinks)
+            } },
+            { text: 'CLOSE', variant: 'secondary', onClick: handleCloseAddSociety }
+          ]}
+          showFooter={true}
+    >
+      <Form onSubmit={(e) => {
                   e.preventDefault();
-                  postSociety(selectedRow.id);
+                  postSociety( addSocietyName,
+                          addSocietyAdresse,
+                          addSocietyNumber,
+                          selectedRow,
+                          selectedRow.id)
                 }}>
                   <Form.Group className="mb-3">
                     <Form.Label>
@@ -565,34 +325,19 @@ const postSociety = async (conventionId: number) => {
                                       setAddSocietyNumber(event.target.value);
                                   }} />
                   </Form.Group>
-        <Modal.Footer>
-          <Button type="submit" onClick={()=> handleCloseAddSociety()}>
-           AJOUTER                        
-          </Button>
-          <Button variant="secondary" onClick={handleCloseAddSociety}>
-            CLOSE
-          </Button>
-          
-
-        </Modal.Footer>
-                </Form>
-        </Modal.Body>
-        
-      </Modal>
-      
-                    
-      <Modal
+                  </Form>
+    </Window>
+    <Window
         show={showSociety}
         onHide={handleCloseSociety}
         backdrop="static"
         keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>L'info d'entreprise!</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          
-            {selectedRow && (selectedRow.society.name !=="")? (
+        headerTitle={'L\'info d\'entreprise!'}
+        footerButtons={['']}
+        showFooter={false}
+
+    >
+       {selectedRow && (selectedRow.society.name !=="")? (
             <>
               <Form>
                 {/* {console.log(selectedRow.society)} */}
@@ -617,16 +362,29 @@ const postSociety = async (conventionId: number) => {
               </p>
             
             )}
-        </Modal.Body>
-    
-      </Modal>
-  
-         <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Saisissez les dates :</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-              <Form>
+    </Window>         
+  <Window
+        show={showModal}
+        onHide={handleCloseModal}
+        backdrop="static"
+        keyboard={false}
+        headerTitle={'Saisissez les dates :'}
+          footerButtons={[
+            { text: 'Créer', type: 'submit', variant: 'primary', onClick:()=> {
+              postConvention(
+                  userInfo,
+                  inputDateStart,
+                  inputDateEnd,
+                  setMainLinks,
+                  handleCloseModal,
+                  setError
+            )}},
+            { text: 'Fermer', variant: 'secondary', onClick:()=> handleCloseModal }
+          ]}
+        showFooter={true}
+
+    >
+<Form>
                 <Form.Group className="mb-3">
                   <Form.Label>du</Form.Label>
                   <Form.Control type="date"
@@ -645,17 +403,9 @@ const postSociety = async (conventionId: number) => {
                                 }}  />
                 </Form.Group>
               </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
-              Fermer
-            </Button>
-            <Button variant="primary" 
-                    onClick={()=> postConvention()}> 
-              Créer
-            </Button>
-          </Modal.Footer>
-        </Modal>
+
+    </Window>
+
       {/* </AppShell.Main> */}
     </AppShell>
   );
