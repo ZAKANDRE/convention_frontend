@@ -41,7 +41,8 @@ export const postSociety = async (
       selectedRow.dateEnd,
       `/api/societies/${createdSocietyId}`,
       selectedRow,
-      selectedRow.progress
+      selectedRow.progress,
+      setMainLinks
     );
         fetchDate(setMainLinks);
 

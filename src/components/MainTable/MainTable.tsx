@@ -12,10 +12,16 @@ export function MainTable({
   handleShowAddSociety,
   handleShow,
   setMainLinks,
-  setError
+  setError,
+  mainLinks,
+  setShowAlert
 }) {
+
   return (
+  <>
+
     <Table striped responsive bordered hover>
+      {/* {console.log(mainLinks[1].rows[0].progress)} */}
       <thead>
         <tr className="text-center">
           <th>Stagiaire</th>
@@ -31,7 +37,9 @@ export function MainTable({
         </tr>
       </thead>
       <tbody>
-        {activeTab?.rows
+        {
+        userInfo.roles[0] === "ROLE_STUDENT" && (
+          activeTab?.rows
           .filter(row => row.studentId === userInfo.id)
           .map(row => (
             <TableRow
@@ -45,9 +53,82 @@ export function MainTable({
               ringValues={ringValues}
               setMainLinks={setMainLinks}
               setError={setError}
+              userInfo={userInfo}
+              disableCase={()=> true}
+              setShowAlert={setShowAlert}
             />
-          ))}
+          )))}
+          {userInfo.roles[0] === "ROLE_SOCIETY" && (
+          mainLinks[1].rows
+          .filter(row => row.progress === 25)
+          .map(row => (
+               <TableRow
+              key={row.id}
+              row={row}
+              users={user}
+              getFormation={getFormation}
+              handleShowSociety={handleShowSociety}
+              handleShowAddSociety={handleShowAddSociety}
+              handleShow={() => handleShow(row.id)}
+              ringValues={ringValues}
+              setMainLinks={setMainLinks}
+              setError={setError}
+              userInfo={userInfo}
+              setShowAlert={setShowAlert}
+            />
+          )))} 
+          
+          {userInfo.roles[0] === "ROLE_CAPITAINE" && (
+          mainLinks[1].rows
+          .filter(row => row.progress === 50)
+          .map(row => (
+               <TableRow
+              key={row.id}
+              row={row}
+              users={user}
+              getFormation={getFormation}
+              handleShowSociety={handleShowSociety}
+              handleShowAddSociety={handleShowAddSociety}
+              handleShow={() => handleShow(row.id)}
+              ringValues={ringValues}
+              setMainLinks={setMainLinks}
+              setError={setError}
+              userInfo={userInfo}
+              setShowAlert={setShowAlert}
+
+            />
+          )))} 
+          
+          {userInfo.roles[0] === "ROLE_DIRECTOR" && (
+          mainLinks[1].rows
+          .filter(row => row.progress === 75)
+          .map(row => (
+               <TableRow
+              key={row.id}
+              row={row}
+              users={user}
+              getFormation={getFormation}
+              handleShowSociety={handleShowSociety}
+              handleShowAddSociety={handleShowAddSociety}
+              handleShow={() => handleShow(row.id)}
+              ringValues={ringValues}
+              setMainLinks={setMainLinks}
+              setError={setError}
+              userInfo={userInfo}
+              setShowAlert={setShowAlert}
+            />
+          )))} 
+      { userInfo.roles[0] === "ROLE_STUDENT"  && activeTab?.rows.length === 0 && (
+
+         <tr>
+          <td colSpan="10" className="text-center">
+           <strong>Aucune convention signée pour le moment!</strong> 
+          </td>
+         </tr>
+          )}
+
       </tbody>
     </Table>
+          </>
   );
 }

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
 /* bootstrap import */
-import {Container, Row, Col } from 'react-bootstrap';
+import {Container, Row, Col, Alert, Toast } from 'react-bootstrap';
 /* Mantine import */
 import { AppShell } from '@mantine/core';
 /** checkin component* */
@@ -15,16 +17,17 @@ import { AddSocietyModal } from '../components/AddSocietyModal/AddSocietyModal';
 import { SocietyInfoModal } from '../components/SocietyInfoModal/SocietyInfoModal';
 import { ConventionModal } from '../components/ConventionModal/ConventionModal';
 import { AddConventionBtn } from '../components/AddConventionBtn/AddConventionBtn';
-
 /** css files**/
 import './HomePage.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
 export function HomePage() {
-  const [mainLinks, setMainLinks] = useState([
-    { id: 1, link: '#', label: 'Mes conventions de stage', value: 'stage', rows: [] },
-    { id: 2, link: '#', label: 'Conventions en traitement', value: 'traitement', rows: [] },
-  ]);
+    const [mainLinks, setMainLinks] = useState([
+        { id: 1, link: '#', label: 'Mes conventions de stage', value: 'stage', rows: [] },
+        { id: 2, link: '#', label: 'Conventions en traitement', value: 'traitement', rows: [] },
+      ]);
+  const location = useLocation();
+  const { state } = location;
   /** Get data from modal input**/
   const [inputDateStart, setinputDateStart] = useState('');
   const [inputDateEnd, setinputDateEnd] = useState('');
@@ -62,34 +65,76 @@ export function HomePage() {
   const handleShowAddSociety = () => setShowAddSociety(true);
   /** Update Ring variables **/
   const ringValues = [{ id: 1, value: 25},{id: 2, value: 50},{id: 3,value: 75},{id: 4,value: 100}];
-
+const [showAlert, setShowAlert] = useState(false);
 useEffect(() => {
   (async () => {
     try {
-      await fetchDate(setMainLinks);
-      
+      await fetchDate(setMainLinks); 
       await fetchAllUsers('http://127.0.0.1:8000/api/users', setUser);
       await fetchAllFormation('http://127.0.0.1:8000/api/formations?page=1', setGetFormation);
       await fetchAllSocieties('http://127.0.0.1:8000/api/societies', setGetSociety);
-      
     } catch (err: any) {
       console.error('Error lors du téléchargement:', err);
       setError(err.message);  
     }
   })();
-}, []);
+}, []); 
+
+useEffect(() => {
+  if (showAlert) {
+    setShowAlert(true);
+    const timer = setTimeout(() => {
+      setShowAlert(false);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }
+}, [showAlert]);
+// console.log(userInfo);
 
   return (
     <AppShell header={{ height: 120 }} padding="md">
+            {showAlert && (  
+                        <Toast>
+                          <Toast.Header>
+                            <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+                            <strong className="me-auto">Message</strong>
+                            <small></small>
+                          </Toast.Header>
+                          <Toast.Body>Réussi avec succès !</Toast.Body>
+                        </Toast>
+                    )
+                  }
       <AppShell.Header>
-        <NavBar news={mainLinks} activeTabId={activeTabId} onTabSelected={setActiveTabId} />
+        {userInfo.roles[0] === "ROLE_STUDENT" && (
+          <NavBar news={mainLinks} activeTabId={activeTabId} onTabSelected={setActiveTabId} />
+        )}
+      {userInfo.roles[0] !== "ROLE_STUDENT" && (
+         <Container>
+              <Row>
+                <Col xl={{offset:4, span:2}}>
+                  <p>
+                    <strong>Mes convention à signer: </strong>
+                  </p>
+                </Col>
+              </Row>
+        </Container>
+      )} 
+
       </AppShell.Header>
+     
       {/* <AppShell.Main> */}
+      
+                
         <Container>
               <Row>
+               
                 <Col xl={{offset:10, span:2}} id="group-btn">
-                  <AddConventionBtn handleShowModal={handleShowModal}/>
+                  <AddConventionBtn 
+                        handleShowModal={handleShowModal}
+                        userInfo={userInfo}/>
+                  
                 </Col>
+               
               </Row>
         </Container>
 
@@ -105,8 +150,11 @@ useEffect(() => {
           handleShow={handleShow}
           setMainLinks={setMainLinks}
           setError={setError}
+          mainLinks={mainLinks}
+          setShowAlert={setShowAlert} 
+ 
         />
-      )}
+  )}
 
     <AddSocietyModal
         show={showAddSociety}
@@ -119,6 +167,7 @@ useEffect(() => {
         setAddSocietyNumber={setAddSocietyNumber}
         selectedRow={selectedRow}
         setMainLinks={setMainLinks}
+        setShowAlert={setShowAlert} 
       />
     <SocietyInfoModal
         show={showSociety}
@@ -135,9 +184,9 @@ useEffect(() => {
         setinputDateStart={setinputDateStart}
         setinputDateEnd={setinputDateEnd}
         setError={setError}
+        setShowAlert={setShowAlert} 
+
   />
-
-
       {/* </AppShell.Main> */}
     </AppShell>
   );

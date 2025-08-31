@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
 import { ModalFormWindow } from '../ModalFormWindow/ModalFormWindow'
 import { postSociety } from '../../api/societyApi';
@@ -12,9 +13,12 @@ export const AddSocietyModal = ({
   setAddSocietyAdresse,
   setAddSocietyNumber,
   selectedRow,
-  setMainLinks
+  setMainLinks,
+  setShowAlert
 
 }) => {
+  const navigate = useNavigate();
+
   return (
     <ModalFormWindow
       show={show}
@@ -24,7 +28,11 @@ export const AddSocietyModal = ({
         {
           text: 'AJOUTER',
           variant: 'primary',
-          onClick: () => postSociety(addSocietyName, addSocietyAdresse, addSocietyNumber,selectedRow, selectedRow.id, setMainLinks)
+          onClick: async () =>{
+            await postSociety(addSocietyName, addSocietyAdresse, addSocietyNumber,selectedRow, selectedRow.id,setMainLinks);
+            setShowAlert(true);
+            handleClose()
+          } 
         },
         {
           text: 'CLOSE',

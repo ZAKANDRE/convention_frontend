@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import { Form } from 'react-bootstrap';
 import { ModalFormWindow } from '../ModalFormWindow/ModalFormWindow'
 import { postConvention } from '../../api/conventionsApi';
@@ -11,8 +13,10 @@ export const ConventionModal = ({
   setMainLinks,
   setinputDateStart,
   setinputDateEnd,
-  setError
+  setError,
+  setShowAlert
 }) => {
+  const navigate = useNavigate();
   return (
     <ModalFormWindow
       show={show}
@@ -22,7 +26,16 @@ export const ConventionModal = ({
         {
           text: 'Créer',
           variant: 'primary',
-          onClick: () => postConvention(userInfo, inputDateStart, inputDateEnd,setMainLinks,handleClose,setError)
+          onClick: async () => {
+                    try { 
+                      await postConvention(userInfo, inputDateStart, inputDateEnd,setMainLinks,handleClose,setError);
+                      setShowAlert(true);
+
+                    } 
+                    catch (err) {
+                      setError('Erreur lors de l’envoi de la convention');
+                    }
+                  }
         },
         {
           text: 'Fermer',
@@ -50,7 +63,6 @@ export const ConventionModal = ({
       ]}
       onSubmit={(e) => {
         e.preventDefault();
-        // postConvention(inputDateStart, inputDateEnd);
       }}
     />
   );

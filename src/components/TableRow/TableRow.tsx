@@ -13,7 +13,8 @@ import {
   updateRing
 } from '../../api/conventionsApi';
 
-   export const TableRow = ({row, users, getFormation, handleShow, handleShowSociety, handleShowAddSociety, setMainLinks, ringValues, setError}) => { 
+   export const TableRow = ({row, users, getFormation, handleShow, handleShowSociety, handleShowAddSociety, setMainLinks, ringValues, setError, userInfo, setShowAlert}) => { 
+              
     return (
     <tr key={row.id} >
                   <td> 
@@ -34,6 +35,8 @@ import {
                                 handleShow={handleShow}
                                 handleShowSociety={handleShowSociety}
                                 handleShowAddSociety={handleShowAddSociety}
+                                userInfo={userInfo}
+
                     />
                   </td>
                   <td>
@@ -43,13 +46,18 @@ import {
                       {new Date(row.dateEnd).toLocaleDateString()}
                   </td>
                   <td>
-                     {ringValues.map(val => (
+                     {
+                     ringValues.map(val => (
                         <ProgressCheckButton  
-                              key={val.id}
-                              digitValue={val.value} 
-                              updateProgress={updateRing(row, setMainLinks)} 
-                              btn_txt={val.value}
-                        /> 
+                          key={val.id}
+                          digitValue={val.value} 
+                          updateProgress={updateRing(row, setMainLinks)}
+                          btn_txt={'SIGNER'}
+                          userInfo={userInfo}
+                          disabled={row.progress === 100}
+                          setShowAlert={setShowAlert}
+                          row={row}
+                        />  
                       ))}
                   </td>
                   <td>
@@ -84,7 +92,9 @@ import {
                   </td>
                   <td>
                     {
-                        <button type="button" className="btn btn-danger offset-11 mb-3 text-uppercase delete-btn" 
+                        <button type="button"
+                                className="btn btn-danger offset-11 mb-3 text-uppercase delete-btn"
+                                disabled={userInfo.roles[0] !== "ROLE_STUDENT" || (userInfo.roles[0] === "ROLE_STUDENT" && row.progress === 100)} 
                             onClick={()=> {
                               deleteConvention(row.id,setError, setMainLinks)}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-folder-minus" viewBox="0 0 16 16">
