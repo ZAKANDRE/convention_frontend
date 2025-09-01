@@ -17,8 +17,6 @@ export const AddSocietyModal = ({
   setShowAlert
 
 }) => {
-  const navigate = useNavigate();
-
   return (
     <ModalFormWindow
       show={show}

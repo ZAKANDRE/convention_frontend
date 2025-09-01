@@ -37,9 +37,10 @@ export function HomePage() {
   const [addSocietyAdresse,setAddSocietyAdresse] = useState('');
   const [addSocietyNumber, setAddSocietyNumber] = useState('');
   /** fin Add society form**/
-  const [activeTabId, setActiveTabId] = useState(1);
+  const [activeTabId, setActiveTabId] = useState(2);
   const { userInfo, isLoading } = useAuth();
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
+  const [selRowAddSoc, setSelRowAddSoc] = useState(null); 
   const [error, setError] = useState<string | null>(null);
   /** GetInfo from API **/
   const [user, setUser] = useState({});
@@ -62,7 +63,11 @@ export function HomePage() {
   /** Modal add Society**/
   const [showAddSociety, setShowAddSociety] = useState(false);
   const handleCloseAddSociety = () => setShowAddSociety(false);
-  const handleShowAddSociety = () => setShowAddSociety(true);
+
+  const handleShowAddSociety = (row) => { 
+    setSelRowAddSoc(row); 
+    setShowAddSociety(true);
+  };
   /** Update Ring variables **/
   const ringValues = [{ id: 1, value: 25},{id: 2, value: 50},{id: 3,value: 75},{id: 4,value: 100}];
 const [showAlert, setShowAlert] = useState(false);
@@ -90,6 +95,7 @@ useEffect(() => {
   }
 }, [showAlert]);
 // console.log(userInfo);
+  // console.log(activeTab?.rows);
 
   return (
     <AppShell header={{ height: 120 }} padding="md">
@@ -105,10 +111,10 @@ useEffect(() => {
                     )
                   }
       <AppShell.Header>
-        {userInfo.roles[0] === "ROLE_STUDENT" && (
+        {/* {userInfo.roles[0] === "ROLE_STUDENT" && ( */}
           <NavBar news={mainLinks} activeTabId={activeTabId} onTabSelected={setActiveTabId} />
-        )}
-      {userInfo.roles[0] !== "ROLE_STUDENT" && (
+        {/* )} */}
+      {/* {userInfo.roles[0] !== "ROLE_STUDENT" && (
          <Container>
               <Row>
                 <Col xl={{offset:4, span:2}}>
@@ -118,23 +124,18 @@ useEffect(() => {
                 </Col>
               </Row>
         </Container>
-      )} 
+      )}  */}
 
       </AppShell.Header>
-     
       {/* <AppShell.Main> */}
       
-                
         <Container>
               <Row>
-               
                 <Col xl={{offset:10, span:2}} id="group-btn">
                   <AddConventionBtn 
                         handleShowModal={handleShowModal}
                         userInfo={userInfo}/>
-                  
                 </Col>
-               
               </Row>
         </Container>
 
@@ -165,7 +166,7 @@ useEffect(() => {
         setAddSocietyName={setAddSocietyName}
         setAddSocietyAdresse={setAddSocietyAdresse}
         setAddSocietyNumber={setAddSocietyNumber}
-        selectedRow={selectedRow}
+        selectedRow={selRowAddSoc}
         setMainLinks={setMainLinks}
         setShowAlert={setShowAlert} 
       />
@@ -185,7 +186,6 @@ useEffect(() => {
         setinputDateEnd={setinputDateEnd}
         setError={setError}
         setShowAlert={setShowAlert} 
-
   />
       {/* </AppShell.Main> */}
     </AppShell>

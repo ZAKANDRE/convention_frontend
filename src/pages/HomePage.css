@@ -2,10 +2,6 @@ body div.offcanvas-top{
     height: fit-content!important;
 }
 
-.accordion-item{
-    /* border: 0px!important; */
-}
-
 .accordion{ 
     width: 30%;
 }
