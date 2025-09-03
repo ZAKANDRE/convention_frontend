@@ -9,7 +9,7 @@ export const fetchDate = async (setMainLinks) => {
   const finishedConv = rows.filter(row => row.progress === 100);
   const notFinishedConv = rows.filter(row => row.progress < 100);
       setMainLinks([
-        { id: 1, link: '#', label: 'Mes conventions de stage', value: 'stage', rows: finishedConv },
+        { id: 1, link: '#', label: 'Conventions de stage signés', value: 'stage', rows: finishedConv },
         { id: 2, link: '#', label: 'Conventions en traitement', value: 'traitement', rows: notFinishedConv },
       ]);
   return rows;

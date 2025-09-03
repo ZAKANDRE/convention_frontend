@@ -71,7 +71,10 @@ export function Login() {
       });
   };
 
-
+     <video width="" height=""  autoPlay muted loop playsInline className='back-video'>
+          <source src="/upload/video.mp4" type="video/mp4" />
+          Votre navigatteur ne support pas video.
+        </video>
   return (
     <Container size={420} mt={-100} >
       <Image src={Afpalogo} ></Image>

@@ -19,7 +19,6 @@ export function MainTable({
 
   return (
   <>
-
     <Table striped responsive bordered hover>
       {/* {console.log(mainLinks[1].rows[0].progress)} */}
       <thead>
@@ -79,8 +78,8 @@ export function MainTable({
           )))} 
           
           {userInfo.roles[0] === "ROLE_CAPITAINE" && (
-          mainLinks[1].rows
-          .filter(row => row.progress === 50)
+          activeTab?.rows
+          .filter(row => (row.progress === 50) || (row.progress ===100))
           .map(row => (
                <TableRow
               key={row.id}
@@ -100,7 +99,7 @@ export function MainTable({
           )))} 
           
           {userInfo.roles[0] === "ROLE_DIRECTOR" && (
-          mainLinks[1].rows
+          activeTab?.rows
           .filter(row => row.progress === 75)
           .map(row => (
                <TableRow

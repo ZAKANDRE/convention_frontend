@@ -23,7 +23,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 export function HomePage() {
     const [mainLinks, setMainLinks] = useState([
-        { id: 1, link: '#', label: 'Mes conventions de stage', value: 'stage', rows: [] },
+        { id: 1, link: '#', label: 'Conventions de stage signés', value: 'stage', rows: [] },
         { id: 2, link: '#', label: 'Conventions en traitement', value: 'traitement', rows: [] },
       ]);
   const location = useLocation();
@@ -112,17 +112,7 @@ return (
         {/* {userInfo.roles[0] === "ROLE_STUDENT" && ( */}
           <NavBar news={mainLinks} activeTabId={activeTabId} onTabSelected={setActiveTabId} />
         {/* )} */}
-      {/* {userInfo.roles[0] !== "ROLE_STUDENT" && (
-         <Container>
-              <Row>
-                <Col xl={{offset:4, span:2}}>
-                  <p>
-                    <strong>Mes convention à signer: </strong>
-                  </p>
-                </Col>
-              </Row>
-        </Container>
-      )}  */}
+
 
       </AppShell.Header>
       {/* <AppShell.Main> */}
@@ -137,10 +127,7 @@ return (
                 </Col>
               </Row>
         </Container>
- <video width="" height=""  autoPlay muted loop playsInline className='back-video'>
-      <source src="/upload/video.mp4" type="video/mp4" />
-      Votre navigatteur ne support pas video.
-    </video> 
+
   {activeTab && userInfo && user && ringValues && (
         <MainTable
           activeTab={activeTab}
