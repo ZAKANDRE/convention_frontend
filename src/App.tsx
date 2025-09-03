@@ -11,6 +11,7 @@ import { PublicSocietyForm } from './components/PublicSocietyForm/PublicSocietyF
 function App() {
   return (
     <>
+   
       <MantineProvider>
         <AuthProvider>
         <Routes>
@@ -20,9 +21,9 @@ function App() {
           <Route element={<ProtectedRoutes />}>
           <Route path="/home" id='j' element={<HomePage />} /></Route>
           <Route path="/public-access/:token" element={<PublicSocietyForm />} />
-      </Routes>
-      </AuthProvider>
-    </MantineProvider >
+          </Routes>
+          </AuthProvider>
+        </MantineProvider >
     </>
   )
 }

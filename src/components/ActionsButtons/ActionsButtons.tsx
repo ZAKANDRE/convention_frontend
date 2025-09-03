@@ -1,20 +1,8 @@
 import { Button } from 'react-bootstrap';
+import { handleGenerateLinkClick } from '../../api/handleGenerateLinkClick.tsx'; // путь адаптируй под свою структуру
 
 export const ActionsButtons = ({row, handleShow,handleShowSociety,handleShowAddSociety,userInfo }) => {
-    const handleGenerateLinkClick = async () => {
-    try {
-      const response = await fetch(`http://localhost:8000/api/generate-token/${row.id}`);
-      if (!response.ok) throw new Error('Ошибка генерации ссылки');
-  
-      const data = await response.json();
-      const token = data.token;
-  
-      window.open(`http://localhost:8000/public-society/new/${token}`, '_blank');
-    } catch (error) {
-      console.error(error);
-      alert('Не удалось сгенерировать ссылку');
-    }
-  };
+
      return (
         <>
          {          <Button     variant="info"
@@ -30,9 +18,8 @@ export const ActionsButtons = ({row, handleShow,handleShowSociety,handleShowAddS
                         </svg>
                       </Button> }
                       <Button variant="success" 
-                              onClick={()=> {    handleGenerateLinkClick() }}
-                              // onClick={()=> {   handleShow(row.id); handleShowAddSociety(row); }}
-                              // disabled={userInfo.roles[0] !== "ROLE_SOCIETY"}
+                              onClick={()=> {    handleGenerateLinkClick(row.id); }}
+                              disabled={userInfo?.roles?.[0] !== "ROLE_STUDENT"}
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" className="bi bi-link" viewBox="0 0 16 16">
                           <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>

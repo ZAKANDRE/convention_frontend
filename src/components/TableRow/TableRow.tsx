@@ -50,7 +50,7 @@ import {
                   <td>
                       {new Date(row.dateEnd).toLocaleDateString()}
                   </td>
-                  <td>
+                  <td className='new'>
                      {
                      ringValues.map(val => (
                         <ProgressCheckButton  

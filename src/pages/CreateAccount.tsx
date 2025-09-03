@@ -1,4 +1,3 @@
-// src/pages/CreateAccount.tsx
 import { useState } from 'react'; // 1. Added useState import
 import {
     Anchor,

@@ -123,6 +123,7 @@ export function NavBar({ news, activeTabId, onTabSelected }) {
       </Container>
       
       <Container>
+        {/* {userInfo?.roles?.[0] === "ROLE_STUDENT" && ( */}
         <Tabs 
           defaultValue={news.find((item) => item.id === activeTabId)?.value}
           onChange={(value) => {
@@ -134,6 +135,8 @@ export function NavBar({ news, activeTabId, onTabSelected }) {
         >
           <TabsListBar infos={news} />
         </Tabs>
+         {/* )} */}
+
       </Container>
 
       {userInfo && (

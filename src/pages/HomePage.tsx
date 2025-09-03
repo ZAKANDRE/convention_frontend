@@ -19,6 +19,7 @@ import { AddConventionBtn } from '../components/AddConventionBtn/AddConventionBt
 /** css files**/
 import './HomePage.css';
 import 'bootstrap/dist/css/bootstrap.css';
+// import ImageToPDFGenerator from '../components/ImageToPDFGenerator/ImageToPDFGenerator.tsx';
 
 export function HomePage() {
     const [mainLinks, setMainLinks] = useState([
@@ -136,7 +137,10 @@ return (
                 </Col>
               </Row>
         </Container>
-
+ <video width="" height=""  autoPlay muted loop playsInline className='back-video'>
+      <source src="/upload/video.mp4" type="video/mp4" />
+      Votre navigatteur ne support pas video.
+    </video> 
   {activeTab && userInfo && user && ringValues && (
         <MainTable
           activeTab={activeTab}
