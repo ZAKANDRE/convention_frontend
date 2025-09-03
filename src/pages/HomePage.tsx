@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-
 /* bootstrap import */
 import {Container, Row, Col, Alert, Toast } from 'react-bootstrap';
 /* Mantine import */
@@ -70,7 +69,7 @@ export function HomePage() {
   };
   /** Update Ring variables **/
   const ringValues = [{ id: 1, value: 25},{id: 2, value: 50},{id: 3,value: 75},{id: 4,value: 100}];
-const [showAlert, setShowAlert] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 useEffect(() => {
   (async () => {
     try {
@@ -94,10 +93,8 @@ useEffect(() => {
     return () => clearTimeout(timer);
   }
 }, [showAlert]);
-// console.log(userInfo);
-  // console.log(activeTab?.rows);
 
-  return (
+return (
     <AppShell header={{ height: 120 }} padding="md">
             {showAlert && (  
                         <Toast>
@@ -131,7 +128,8 @@ useEffect(() => {
       
         <Container>
               <Row>
-                <Col xl={{offset:10, span:2}} id="group-btn">
+                <Col xl={{offset:10, span:3}} id="group-btn">
+                {/* <strong>Créer une convention</strong> */}
                   <AddConventionBtn 
                         handleShowModal={handleShowModal}
                         userInfo={userInfo}/>

@@ -5,6 +5,7 @@ export const ProgressCheckButton = ({row, digitValue, updateProgress, btn_txt, u
     <>
           {userInfo.roles[0] ==="ROLE_STUDENT" && digitValue === 25 && (
           <Button 
+            variant='dark'
             disabled={row.progress >= 25 ? true : false}
             data-value={digitValue} 
             onClick={ (e) => {
@@ -19,6 +20,7 @@ export const ProgressCheckButton = ({row, digitValue, updateProgress, btn_txt, u
 
           {userInfo.roles[0] ==="ROLE_SOCIETY" && digitValue === 50 && (
           <Button 
+            variant='dark'
             data-value={digitValue} 
             onClick={ (e) => {
               updateProgress(e);
@@ -31,6 +33,7 @@ export const ProgressCheckButton = ({row, digitValue, updateProgress, btn_txt, u
           }
           {userInfo.roles[0] ==="ROLE_CAPITAINE" && digitValue === 75 && (
           <Button 
+            variant='dark'
             disabled={disabled}
             data-value={digitValue} 
              onClick={ (e) => {
@@ -44,6 +47,7 @@ export const ProgressCheckButton = ({row, digitValue, updateProgress, btn_txt, u
           }
           {userInfo.roles[0] ==="ROLE_DIRECTOR" && digitValue === 100 && (
           <Button 
+            variant='dark'
             disabled={disabled}
             data-value={digitValue} 
              onClick={ (e) => {
