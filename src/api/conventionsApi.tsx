@@ -70,7 +70,12 @@ export const postConvention = async (
         dateEnd: inputDateEnd,
         users: [],
         society: "/api/societies/3",
-        progress: 0
+        progress: 0,
+        tuteurId: 23,
+        studentSignaturePath: "nothing",
+        societySignaturePath: "nothing",
+        commanderSignaturePath: "nothing",
+        directorSignaturePath: "nothing"
       })
     });
 
@@ -127,3 +132,37 @@ export const updateRing = (row, setMainLinks) => async (e, onSuccess) => {
     console.error("Erreur lors de la mise à jour du ring:", err);
   }
 };
+
+
+// 1. Измените сигнатуру функции
+export const patchRing = async (id, progress_number, setMainLinks = null) => {
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/api/conventions/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Accept': 'application/ld+json',
+        'Content-Type': 'application/merge-patch+json'
+      },
+      body: JSON.stringify({
+        progress: progress_number
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erreur PATCH: ${response.status}`);
+    }
+
+    // 2. Вызывайте только если функция передана
+    if (setMainLinks && typeof setMainLinks === 'function') {
+      await fetchDate(setMainLinks);
+    }
+    
+    console.log('PATCH successful for convention:', id);
+    return true;
+  } catch (err) {
+    console.error('PATCH error:', err);
+    return false;
+  }
+};
+
+  

@@ -31,7 +31,7 @@ export const ProgressCheckButton = ({row, digitValue, updateProgress, btn_txt, u
             </Button>
             )
           }
-          {userInfo.roles[0] ==="ROLE_CAPITAINE" && digitValue === 75 && (
+          {userInfo.roles[0] ==="ROLE_COMMANDER" && digitValue === 75 && (
           <Button 
             variant='dark'
             disabled={disabled}

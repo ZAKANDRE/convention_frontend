@@ -1,17 +1,23 @@
+  let spinenrLoading = 
+  <div className="spinner-border text-success" role="status">
+    <span className="visually-hidden">Loading...</span>
+  </div>
+
 export const getFormationName = (formationId : number,  users: {[key: string]: any}) =>{
   const formation = users[formationId];
   if(formation){
     return `${formation.name}`
   }
-  return 'Téléchargement...';
+  return spinenrLoading;
 };
 
 export const getUserFirstName = (userId: number,  users: {[key: string]: any}) => {
   const userFName = users[userId];
+
   if (userFName ) {
     return `${userFName.first_name}`;
   }
-  return 'Téléchargement...'; 
+  return spinenrLoading; 
 };
 
 export const getUserLastName = (userId: number,  users: {[key: string]: any}) => {
@@ -19,7 +25,7 @@ export const getUserLastName = (userId: number,  users: {[key: string]: any}) =>
   if (userLName ) {
     return `${userLName.last_name}`;
   }
-  return 'Téléchargement...'; 
+  return spinenrLoading; 
 };
 
 export const extractSocietyId = (row) => {

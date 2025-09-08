@@ -23,16 +23,14 @@ export function MainTable({
       {/* {console.log(mainLinks[1].rows[0].progress)} */}
       <thead>
         <tr className="text-center">
-          <th>Stagiaire</th>
-          <th>Capitaine</th>
-          <th>Directeur AFPA</th>
-          <th>Libelle stage</th>
+          <th>Prénom</th>
+          <th>Nom</th>
           <th>Entreprise</th>
           <th>DU</th>
           <th>AU</th>
           <th>Signature</th>
-          <th>Progression</th>
-          <th>Suppresion</th>
+          <th>Progress</th>
+          <th>Visualisation</th>
         </tr>
       </thead>
       <tbody>
@@ -77,7 +75,7 @@ export function MainTable({
             />
           )))} 
           
-          {userInfo.roles[0] === "ROLE_CAPITAINE" && (
+          {userInfo.roles[0] === "ROLE_COMMANDER" && (
           activeTab?.rows
           .filter(row => (row.progress === 50) || (row.progress ===100))
           .map(row => (

@@ -1,25 +1,24 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 /* bootstrap import */
-import {Container, Row, Col, Alert, Toast } from 'react-bootstrap';
+import {Container, Row, Col } from 'react-bootstrap';
 /* Mantine import */
-import { AppShell } from '@mantine/core';
 /** checkin component* */
 import { useAuth } from '../context/AuthContext.js';
 /** another components* */
+
 /** personnal components* */
 import { NavBar } from '../components/NavBar';
 import { fetchDate} from '../api/conventionsApi';
 import { fetchAllUsers, fetchAllFormation, fetchAllSocieties } from '../api/useffects.js';
 import { MainTable } from '../components/MainTable/MainTable';
-import { AddSocietyModal } from '../components/AddSocietyModal/AddSocietyModal';
 import { SocietyInfoModal } from '../components/SocietyInfoModal/SocietyInfoModal';
 import { ConventionModal } from '../components/ConventionModal/ConventionModal';
 import { AddConventionBtn } from '../components/AddConventionBtn/AddConventionBtn';
+
 /** css files**/
 import './HomePage.css';
 import 'bootstrap/dist/css/bootstrap.css';
-// import ImageToPDFGenerator from '../components/ImageToPDFGenerator/ImageToPDFGenerator.tsx';
 
 export function HomePage() {
     const [mainLinks, setMainLinks] = useState([
@@ -96,37 +95,16 @@ useEffect(() => {
 }, [showAlert]);
 
 return (
-    <AppShell header={{ height: 120 }} padding="md">
-            {showAlert && (  
-                        <Toast>
-                          <Toast.Header>
-                            <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
-                            <strong className="me-auto">Message</strong>
-                            <small></small>
-                          </Toast.Header>
-                          <Toast.Body>Réussi avec succès !</Toast.Body>
-                        </Toast>
-                    )
-                  }
-      <AppShell.Header>
-        {/* {userInfo.roles[0] === "ROLE_STUDENT" && ( */}
-          <NavBar news={mainLinks} activeTabId={activeTabId} onTabSelected={setActiveTabId} />
-        {/* )} */}
+  <>
+        <NavBar news={mainLinks} activeTabId={activeTabId} onTabSelected={setActiveTabId} />
 
+      <section>
+        <AddConventionBtn 
+            handleShowModal={handleShowModal}
+            userInfo={userInfo}
+        />
 
-      </AppShell.Header>
-      {/* <AppShell.Main> */}
-      
-        <Container>
-              <Row>
-                <Col xl={{offset:10, span:3}} id="group-btn">
-                {/* <strong>Créer une convention</strong> */}
-                  <AddConventionBtn 
-                        handleShowModal={handleShowModal}
-                        userInfo={userInfo}/>
-                </Col>
-              </Row>
-        </Container>
+      </section>  
 
   {activeTab && userInfo && user && ringValues && (
         <MainTable
@@ -142,28 +120,15 @@ return (
           setError={setError}
           mainLinks={mainLinks}
           setShowAlert={setShowAlert} 
- 
         />
   )}
 
-    <AddSocietyModal
-        show={showAddSociety}
-        handleClose={handleCloseAddSociety}
-        addSocietyName={addSocietyName}
-        addSocietyAdresse={addSocietyAdresse}
-        addSocietyNumber={addSocietyNumber}
-        setAddSocietyName={setAddSocietyName}
-        setAddSocietyAdresse={setAddSocietyAdresse}
-        setAddSocietyNumber={setAddSocietyNumber}
-        selectedRow={selRowAddSoc}
-        setMainLinks={setMainLinks}
-        setShowAlert={setShowAlert} 
-      />
     <SocietyInfoModal
         show={showSociety}
         handleClose={handleCloseSociety}
         selectedRow={selectedRow}
     />
+
    <ConventionModal 
         show={showModal}
         handleClose={handleCloseModal}
@@ -176,7 +141,6 @@ return (
         setError={setError}
         setShowAlert={setShowAlert} 
   />
-      {/* </AppShell.Main> */}
-    </AppShell>
+  </>
   );
 }
