@@ -1,14 +1,12 @@
-  let spinenrLoading = 
-  <div className="spinner-border text-success" role="status">
-    <span className="visually-hidden">Loading...</span>
-  </div>
+import { Spinner } from '../components/Spinner/Spinner.tsx'
+
 
 export const getFormationName = (formationId : number,  users: {[key: string]: any}) =>{
   const formation = users[formationId];
   if(formation){
     return `${formation.name}`
   }
-  return spinenrLoading;
+  return <Spinner/>;
 };
 
 export const getUserFirstName = (userId: number,  users: {[key: string]: any}) => {
@@ -17,7 +15,7 @@ export const getUserFirstName = (userId: number,  users: {[key: string]: any}) =
   if (userFName ) {
     return `${userFName.first_name}`;
   }
-  return spinenrLoading; 
+  return <Spinner/>; 
 };
 
 export const getUserLastName = (userId: number,  users: {[key: string]: any}) => {
@@ -25,7 +23,7 @@ export const getUserLastName = (userId: number,  users: {[key: string]: any}) =>
   if (userLName ) {
     return `${userLName.last_name}`;
   }
-  return spinenrLoading; 
+  return <Spinner/>; 
 };
 
 export const extractSocietyId = (row) => {

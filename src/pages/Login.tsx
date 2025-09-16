@@ -11,23 +11,21 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import Afpalogo from '../assets/logo/afpa_logo.png'
+import Afpalogo from '../assets/logo/logo3.png'
 import classes from '../module/css/Login.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useForm } from '@mantine/form';
 import { useEffect, useState } from 'react';
+import { Spinner } from '../components/Spinner/Spinner.tsx'
+import './css/Login.css';
 
 export function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [showSpinner, setShowSpinner] = useState(false);
+  const token = localStorage.getItem('userToken');
 
-  useEffect(() => {
-      if (localStorage.getItem('userToken')) {
-        navigate('/home');
-      }
-    }, [navigate]);
-    
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
@@ -38,6 +36,27 @@ export function Login() {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
     },
   });
+
+  // if (token) {
+  //   setTimeout(() => window.location.href = '/home', 50);
+  //   return <Spinner />;
+  // }
+  // useEffect(() => {
+  //     if (localStorage.getItem('userToken')) {
+  //       navigate('/home');
+  //     }
+  //   }, [navigate]);
+    
+  // const form = useForm({
+  //   mode: 'uncontrolled',
+  //   initialValues: {
+  //     email: '',
+  //     password: '',
+  //   },
+  //   validate: {
+  //     email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+  //   },
+  // });
 
   const handleFormSubmit = (values) => {
     setLoading(true);
@@ -55,28 +74,36 @@ export function Login() {
         console.log("Connexion réussie:", response.data);
         const token = response.data.token;
         localStorage.setItem('userToken', token);
+        setShowSpinner(true);
 
         if (token) {
           localStorage.setItem('jwt_token', token);
-          navigate('/home');
+          // navigate('/home');
+          window.location.href = '/home';
         } else {
           console.log("Aucun token reçu, veuillez réessayer.");
         }
       })
       .catch(function (error) {
-        console.error("Error:", error.response ? error.response.data : error.message);
+        // console.error("Error1:", error.response ? error.response.data : error.message);
+        alert('Vos données ne sont pas correctes, veuillez les ressaisir !')
       })
       .finally(() => {
         setLoading(false);
       });
   };
 
-     <video width="" height=""  autoPlay muted loop playsInline className='back-video'>
+
+   if (showSpinner) {
+    return <Spinner/>;
+  }
+  return (
+    <>
+         <video width="600" height="100"  autoPlay muted loop playsInline className='back-video'>
           <source src="/upload/video.mp4" type="video/mp4" />
           Votre navigatteur ne support pas video.
         </video>
-  return (
-    <Container size={420} mt={-100} >
+    <Container size={420} mt={-100} id="login-form" >
       <Image src={Afpalogo} ></Image>
       <Title ta="center" className={classes.title}>
         Connexion
@@ -117,5 +144,6 @@ export function Login() {
         </Paper>
       </form>
     </Container >
+    </>
   );
 }

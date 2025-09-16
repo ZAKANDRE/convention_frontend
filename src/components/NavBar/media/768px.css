@@ -1,0 +1,11 @@
+@media screen and (min-width:576px){
+   [data-mantine-color-scheme='light'] .m_89d60db1[data-variant='default'] {
+     justify-self: center;
+    }
+    .m_7485cace:where([data-strategy='block']):where([data-fluid]) {
+        width: 95%;
+    }
+    #navbarScroll {
+        margin: 3% 0 0 0;
+    }
+}

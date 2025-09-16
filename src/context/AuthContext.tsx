@@ -3,11 +3,11 @@
 import React, { createContext, useState, useEffect, useContext, useMemo } from 'react';
 import axios from 'axios';
 // 1. Create the Context
-
 const AuthContext = createContext(null);
 
 // 2. Create the AuthProvider Component
 export function AuthProvider({ children }) {
+
   const [userInfo, setUserInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,7 +27,7 @@ export function AuthProvider({ children }) {
         // Correct URL and Authorization header
         const response = await axios.get('http://127.0.0.1:8000/api/me', {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/ld+json',
             // Correct template literal syntax
             'Authorization': 'Bearer '+ token,
           },
@@ -38,7 +38,7 @@ export function AuthProvider({ children }) {
         // Handle errors, e.g., token expired
         console.error("Failed to fetch user:", err);
         setError(err.message);
-        localStorage.removeItem('userToken'); // Clean up bad token
+        // localStorage.removeItem('userToken'); // Clean up bad token
       } finally {
         setIsLoading(false);
       }

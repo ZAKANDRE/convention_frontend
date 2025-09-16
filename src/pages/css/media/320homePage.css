@@ -1,0 +1,17 @@
+@media screen and (min-width:320px) {
+    .top-table {
+       justify-content: center;
+       flex-wrap: wrap;
+    }
+    .top-table .mantine-Input-wrapper{
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    main {
+      padding: 0 3%;
+    }
+    #serching-input{
+        border-radius: 9px;
+        height: 50px;
+    }
+}

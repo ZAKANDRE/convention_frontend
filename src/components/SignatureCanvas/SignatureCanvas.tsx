@@ -3,8 +3,8 @@ import { patchRing } from '../../api/conventionsApi';
 import {Collapse , Button } from 'react-bootstrap';
 import './SignatureCanvas.css'
 
-export const SignatureCanvas = ({ convId1, userRole, row, isDisabled = false, setMainLinks, valueRing=25 }) => {
-  const [open, setOpen] = useState(false);
+export const SignatureCanvas = ({ convId1, userRole, row,open1, isDisabled = false, setMainLinks, valueRing=25, setOpen }) => {
+  // const [open, setOpen] = useState(false);
 
     if(userRole === 'ROLE_STUDENT' && row.progress >= 25 ){
     isDisabled = true;
@@ -12,7 +12,7 @@ export const SignatureCanvas = ({ convId1, userRole, row, isDisabled = false, se
   const calculatedValueRing = userRole === 'ROLE_COMMANDER' ? 20 : 100;
   
   const getProgressValue = () => {
-    if (userRole === 'ROLE_COMMANDER') return 50;
+    if (userRole === 'ROLE_COMMANDER') return 75;
     if (userRole === 'ROLE_DIRECTOR') return 100;
     if (userRole === 'ROLE_STUDENT') return 25;
   };
@@ -46,7 +46,7 @@ export const SignatureCanvas = ({ convId1, userRole, row, isDisabled = false, se
       canvas.style.pointerEvents = 'none';
       canvas.style.background = '#f5f5f5';
     } else {
-      canvas.style.cursor = 'crosshair';
+      canvas.style.cursor = 'url("/images/quill.png"), auto';
       canvas.style.opacity = '1';
       canvas.style.pointerEvents = 'auto';
       canvas.style.background = 'white';
@@ -133,18 +133,7 @@ export const SignatureCanvas = ({ convId1, userRole, row, isDisabled = false, se
 
   return (
     <>
-    <Button
-    variant='success'
-        onClick={() => setOpen(!open)}
-        aria-controls="example-collapse-text"
-        aria-expanded={open}
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" className="bi bi-caret-down-fill" viewBox="0 0 16 16">
-        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-      </svg>
-      </Button>
-
-     <Collapse in={open}>
+     <Collapse in={open1}>
 
       <div id="example-collapse-text">
       <span className='sign-here'> Veillez signer ci-dessous: </span>
@@ -158,7 +147,7 @@ export const SignatureCanvas = ({ convId1, userRole, row, isDisabled = false, se
             style={{ 
               border: '1px solid black', 
               background: isDisabled ? '#f5f5f5' : 'white',
-              cursor: isDisabled ? 'not-allowed' : 'crosshair',
+              cursor: isDisabled ? 'not-allowed' : '/images/quill.png',
               opacity: isDisabled ? 0.6 : 1,
               pointerEvents: isDisabled ? 'none' : 'auto'
             }}
@@ -166,7 +155,13 @@ export const SignatureCanvas = ({ convId1, userRole, row, isDisabled = false, se
       <br />
       <button 
         className="btn btn-success"
-        onClick={async () => { await patchRing(row.id, provalue, setMainLinks); saveImage(); setOpen(!open)}}
+        onClick={async () => { 
+          if (isEmpty) {
+            alert('Vous n\'avez pas signé la convention!');
+            return;
+          }
+          await patchRing(row.id, provalue, setMainLinks); saveImage(); setOpen(!open)
+        }}
         disabled={isDisabled}
         style={{ 
           opacity: isDisabled ? 0.6 : 1,
@@ -186,10 +181,10 @@ export const SignatureCanvas = ({ convId1, userRole, row, isDisabled = false, se
           cursor: isDisabled ? 'not-allowed' : 'pointer'
         }}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
-  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-</svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
+        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+      </svg>
 
       </button>
     </div>

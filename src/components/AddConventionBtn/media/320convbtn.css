@@ -1,0 +1,10 @@
+@media screen and (min-width:320px){
+    #AddConventionBtn{
+        width: 100%;
+    }
+    #AddConventionBtn button{
+        width: 100%;
+        margin: 0 0 5px 0;
+        height: 50px;
+    }
+}

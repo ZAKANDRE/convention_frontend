@@ -1,0 +1,39 @@
+@media screen and (min-width:1200px) {
+    #main .table-responsive table.table {
+        display: table;
+    }
+    #main .table-responsive table.table thead{
+        display: table-header-group;
+    }
+    #main .table-responsive table.table tbody {
+        display: table-row-group;
+    }
+    #main .table-responsive table.table tbody {
+        display: table-row-group;
+    }
+    #main .table-responsive table.table tbody tr{
+        display: table-row;
+    }
+    #main .table-responsive table.table tbody tr td{
+        display: table-cell;
+    }
+    #main .table-responsive table.table tbody tr td {
+        width: auto;
+    }
+    #example-collapse-text {
+        /* margin: 20px 0px;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap; */
+    }
+    #example-collapse-text{
+        width: 100%;
+    }
+    .top-table #serching-input {
+        height: 40px;
+    }
+    .top-table #AddConventionBtn button{
+        width: 75%;
+        height: 40px;
+    }
+}

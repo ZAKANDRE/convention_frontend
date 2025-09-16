@@ -69,13 +69,6 @@ table{
     padding: 2rem;
 }
 
-header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    left: 0;
-}
-
 canvas{
     background: white;
     border-radius: 5px;
@@ -84,4 +77,14 @@ canvas{
 
 #example-collapse-text{
     margin: 20px 0px;
+}
+.m_8fb7ebe7{
+    width: 100%;
+}
+.top-table{
+    display: flex;
+    justify-content: space-between;
+}
+main{
+    padding: 0 2em;
 }

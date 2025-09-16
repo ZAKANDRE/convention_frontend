@@ -1,9 +1,16 @@
 #root {
-  width: 100%;
-  margin: 0 auto;
-  padding: 2rem;
- 
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    overflow: auto;
+    height: 100%;
 }
 
-
+@media screen and (min-width:1200px){
+    #root{
+        overflow-y: scroll;
+    }
+}
 

@@ -1,0 +1,13 @@
+@media screen and (min-width:992px) {
+    main {
+        padding: 0 1%;
+    }
+    .top-table {
+       justify-content: space-between;
+       padding-top: 50px;
+    }
+    section.top-table div.mantine-Input-wrapper{
+        width: 48%;
+        margin: 0!important;
+    }
+}

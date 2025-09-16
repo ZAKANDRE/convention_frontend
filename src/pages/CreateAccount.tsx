@@ -22,14 +22,13 @@ import { notifications } from '@mantine/notifications';
 export function CreateAccount() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
             first_name: '',
             last_name: '',
             email: '',
-            password: '',
+            plainPassword: '',
             telephone: '', 
             matricule: '',
             formation_id: '', 
@@ -41,11 +40,10 @@ export function CreateAccount() {
     
     const handleFormSubmit = (values) => {
         setLoading(true);
-        console.log("Submitting raw values:", values);
-
         // 3. Defined userPayload and formatted the formation as an IRI
         const userPayload = {
             ...values, // includes firstname, lastname, email, etc.
+            // password: values.plainPassword,
             formation: `/api/formations/${values.formation}`
         };
 
@@ -55,7 +53,7 @@ export function CreateAccount() {
             }
         })
         .then(function (response) {
-            console.log("Success:", response);
+            alert('Votre compte a été créer avec succès !')
             notifications.show({
                 title: 'Compte créé !',
                 message: `L'utilisateur ${values.firstname} a été créé avec succès.`,
@@ -116,7 +114,8 @@ export function CreateAccount() {
                     <FormationCombox
                         value={form.values.formation}
                         onChange={(value) => form.setFieldValue('formation', value || '')}
-                    />
+                    /> 
+  
                     <TextInput
                         label="Courrier"
                         placeholder="votre@email.com"
@@ -147,7 +146,7 @@ export function CreateAccount() {
                         required
                         mt="md"
                         radius="md"
-                        {...form.getInputProps('password')}
+                        {...form.getInputProps('plainPassword')}
                     />
 
                     <Button color="#86bc24" fullWidth mt="xl" radius="md" type="submit" disabled={loading}>
