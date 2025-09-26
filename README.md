@@ -25,9 +25,11 @@ Enfin, le directeur du centre intervient pour vérifier les informations, valide
 - **Front-End :** React 19.1.1
 - **Base de données :** MySQL
 
-![MySQL](/public/images/readme/mysql.png)
-![Symfony](/public/images/readme/symfony-e1554299312897.png)
-![React](/public/images/readme/react.gif)
+<p align="center">
+  <img src="/public/images/readme/mysql.png" alt="MySQL" width="100" style="margin-right: 20px;"/>
+  <img src="/public/images/readme/symfony-e1554299312897.png" alt="Symfony" width="100" style="margin-right: 20px;"/>
+  <img src="/public/images/readme/react.gif" alt="React" width="100"/>
+</p>
 
 ## 🔗 Démo en ligne
 
