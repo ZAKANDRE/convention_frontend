@@ -13,11 +13,11 @@ Enfin, le directeur du centre intervient pour vérifier les informations, valide
 <strong> 
     Le site est responsive à partir d'une largeur de 320 px, et a été conçu dans le but d’être pleinement accessible, 
     notamment sur les petits écrans.
-    Vous pouvez visualiser et tester le site par vous‑même.
-    Pour accéder rapidement à la démo, utilisez les identifiants suivants :
-    Email : test@test.com
-    Mot de passe : Password123+
-    Vous pouvez aussi créer un autre compte (une adresse e‑mail factice suffit pour la démo).
+    Vous pouvez visualiser et tester le site par vous‑même.  
+    Pour accéder rapidement à la démo, utilisez les identifiants suivants :  
+    Email : test@test.com  
+    Mot de passe : Password123+  
+    Vous pouvez aussi créer un autre compte (une adresse e‑mail factice suffit pour la démo).  
     
     <a href="https://antiquewhite-bee-570664.hostingersite.com" target="_blank">🌐 View Live Demo</a>
 </strong> 
