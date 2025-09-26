@@ -3,10 +3,7 @@
     height: fit-content;
     padding-top: 4%;
 }
-#login-form > img{
-    margin-bottom: -126px;
-    margin-top: 25px;
-}
+
 #login-form h1 {
     color: #fff;
 }

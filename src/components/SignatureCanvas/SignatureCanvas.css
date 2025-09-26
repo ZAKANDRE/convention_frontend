@@ -6,3 +6,6 @@ canvas{
     margin-bottom: 10px;
      cursor: url('/images/quill.png');
 }
+#btn-danger svg {
+    margin-left: 0;
+}

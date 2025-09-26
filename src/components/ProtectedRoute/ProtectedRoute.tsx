@@ -7,7 +7,7 @@ export default function ProtectedRoute({ children }) {
   const { userInfo, isLoading } = useAuth();
 
   if (isLoading) {
-    return <Spinner />; // или <Loading />
+    return <Spinner />; 
   }
 
   if (!userInfo) {

@@ -1,4 +1,6 @@
 import { useState } from 'react'; // 1. Added useState import
+import  { PhoneMask } from '../components/PhoneMask/PhoneMask.tsx'
+
 import {
     Anchor,
     Button,
@@ -13,8 +15,8 @@ import {
     LoadingOverlay,
 } from '@mantine/core';
 import { Link, useNavigate } from 'react-router-dom';
-import classes from '../module/css/Login.module.css';
-import { FormationCombox } from '../components/FormationCombox';
+import classes from './css/module/Login.module.css';
+import { FormationCombox } from '../components/FormationCombox/FormationCombox.tsx';
 import axios from 'axios';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
@@ -31,28 +33,31 @@ export function CreateAccount() {
             plainPassword: '',
             telephone: '', 
             matricule: '',
-            formation_id: '', 
+            formation: '', 
         },
         validate: {
             email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+            telephone: (value) =>
+                 /^\d{2} \d{2} \d{2} \d{2} \d{2}$/.test(value)
+                ? null
+                : 'Numéro invalide (ex: 06 12 34 56 78)',
         },
     });
     
     const handleFormSubmit = (values) => {
         setLoading(true);
-        // 3. Defined userPayload and formatted the formation as an IRI
         const userPayload = {
-            ...values, // includes firstname, lastname, email, etc.
-            // password: values.plainPassword,
+            ...values, 
             formation: `/api/formations/${values.formation}`
         };
 
-        axios.post('http://127.0.0.1:8000/api/users', userPayload, {
+        axios.post('https://antiquewhite-bee-570664.hostingersite.com/symfony/public/api/users', userPayload, {
             headers: {
                 'Content-Type': 'application/ld+json'
             }
         })
         .then(function (response) {
+            console.log(response.data)
             alert('Votre compte a été créer avec succès !')
             notifications.show({
                 title: 'Compte créé !',
@@ -124,19 +129,22 @@ export function CreateAccount() {
                         mt="md"
                         {...form.getInputProps('email')}
                     />
-                    <TextInput
+                    {/* <TextInput
                         label="Téléphone"
                         placeholder="0612345678"
                         required
                         radius="md"
                         mt="md"
                         {...form.getInputProps('telephone')}
+                    /> */}
+                    <PhoneMask form={form}
                     />
                     <TextInput
                         label="Matricule AFPA"
                         placeholder="Matricule"
                         required
                         radius="md"
+                        name="phone"
                         mt="md"
                         {...form.getInputProps('matricule')}
                     />

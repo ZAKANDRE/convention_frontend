@@ -1,0 +1,70 @@
+@media screen and (min-width:320px){
+    html, body{
+        height: 100%;
+    }
+    #root{
+        display: flex;
+        flex-wrap: wrap;
+        align-content: start;
+        position: relative;
+                align-self: baseline;
+
+    }
+
+    #login-form {
+        height: 100%;
+        padding-top: 10%;
+        display: flex;
+        align-self: flex-end;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: center;
+    }
+
+    form{
+        width: 100%;
+    }
+
+    #login-form>img {
+        width: 80%;
+    }
+
+    #main{
+        width: 100%;
+    }
+
+    .back-video{
+        position: fixed;
+        top: 0;
+        left: 0;
+        min-width: 100%;
+        min-height: 100%;
+        object-fit: cover;
+        z-index: 0;
+    }
+
+    #logo-login{
+        object-fit: contain;
+    }
+
+    .Tooltip {
+        background: rgba(0, 0, 0, 0.85);
+        color: white;
+        pointer-events: none;
+        border-radius: 6px;
+        padding: 8px 18px;
+        font-size: 0.85rem;
+        max-width: 400px;
+        z-index: 9999999999;
+        position: relative;
+    }
+    #Tooltip{
+
+    }
+}
+
+@media screen and (min-width: 320px) and (orientation: landscape) {
+        #login-form {
+            align-content: initial;
+        }
+}

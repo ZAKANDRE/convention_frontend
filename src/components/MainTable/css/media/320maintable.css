@@ -1,13 +1,17 @@
 @media screen and (min-width:320px){
-    #main .table-responsive table.table {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    border-radius: 15px;
-
+    .unknown-text{
+        padding: 15px;
+        display: block;
     }
-    
+
+    #main .table-responsive table.table {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        border-radius: 15px;
+    }
+
     #main .table-responsive table.table thead {
         display: none;
     }
@@ -19,8 +23,8 @@
         flex-wrap: wrap;
         border-top: 0px;
         border-bottom: 0;
-        /* box-shadow: 0 0 5px 0px rgba(0,0,0,.9); */
     }
+
     #main .table-responsive table.table tbody tr td:first-child{ 
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
@@ -34,14 +38,43 @@
     }
 
     #main .table-responsive table.table tbody tr td {
-            width: 100%;
+        width: 100%;
+        font-size: 18px;
     }
     
     #main .table-responsive table.table tbody tr:nth-child(odd) td {
             border-bottom: 1px solid#fff;
             color: #000;
     }
+    
     #main .table-responsive table.table tbody tr:nth-child(even) td {
             border-bottom: 1px solid#f2f2f2;
+    }
+    
+    #main .table-responsive table.table tbody tr td button{
+        width: 50px;
+         height: 42px;
+    }
+
+    #main .table-responsive table.table tbody tr td button svg{
+        width: 100%;
+        height: 80%;
+    }
+
+    #main .table-responsive table.table tbody tr.sign-row td{
+        border: 0;
+    }
+    
+    .explore-btn button{
+      width: 100%;
+    }
+
+    .explore-btn button, .explore-btn button.btn:disabled,
+    .explore-btn button:hover, .explore-btn button:first-child:active{
+        background-color: transparent;
+        border-color: transparent;
+    }
+    .explore-btn svg{
+        fill: #000;
     }
 }

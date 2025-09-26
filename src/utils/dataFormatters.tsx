@@ -30,3 +30,31 @@ export const extractSocietyId = (row) => {
   if (!row || !row.society || !row.society["@id"]) return null;
   return row.society["@id"].replace('/api/societies/', '');
 };
+
+export const sortUp = (setMainLinks, activeTab, activeTabId) => {
+    if (!activeTab) return;
+    
+    setMainLinks(prevMainLinks => prevMainLinks.map(tab => {
+      if (tab.id === activeTabId) {
+        return {
+          ...tab,
+          rows: [...tab.rows].sort((a, b) => new Date(a.dateStart).getTime()  - new Date(b.dateStart).getTime() )
+        };
+      }
+      return tab;
+    }));
+};
+
+export const sortDown = (setMainLinks, activeTab, activeTabId) => {
+    if (!activeTab) return;
+    
+    setMainLinks(prevMainLinks => prevMainLinks.map(tab => {
+      if (tab.id === activeTabId) {
+        return {
+          ...tab,
+          rows: [...tab.rows].sort((a, b) => new Date(b.dateStart).getTime()  - new Date(a.dateStart).getTime() )
+        };
+      }
+      return tab;
+    }));
+  };

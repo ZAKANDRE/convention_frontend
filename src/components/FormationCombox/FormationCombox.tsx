@@ -22,7 +22,7 @@ export function FormationCombox({ value, onChange }: FormationComboxProps) {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const { data: response } = await axios.get('http://localhost:8000/api/formations');
+        const { data: response } = await axios.get('https://antiquewhite-bee-570664.hostingersite.com/symfony/public/api/formations');
         if (response.member) {
           setData(response.member);
         }
@@ -43,13 +43,11 @@ export function FormationCombox({ value, onChange }: FormationComboxProps) {
   }, [value, data]);
 
   const combobox = useCombobox();
-
   const filteredOptions = data.filter((item) =>
     item.name.toLowerCase().includes(searchValue.toLowerCase().trim())
   );
 
   const options = filteredOptions.map((item) => (
-
     <Combobox.Option value={String(item.id)} key={item.id}>
       {item.name} ({item.sigle})
     </Combobox.Option>
@@ -57,12 +55,11 @@ export function FormationCombox({ value, onChange }: FormationComboxProps) {
 
   return (
     <Combobox
-      store={combobox}
-      onOptionSubmit={(optionValue: string) => {
+        store={combobox}
+        onOptionSubmit={(optionValue: string) => {
         onChange(optionValue); 
         const selectedName = data.find(item => String(item.id) === optionValue)?.name;
         setSearchValue(selectedName || '');
-
         combobox.closeDropdown();
       }}
     >
@@ -76,6 +73,7 @@ export function FormationCombox({ value, onChange }: FormationComboxProps) {
             combobox.openDropdown();
             combobox.updateSelectedOptionIndex();
           }}
+          
           onClick={() => combobox.openDropdown()}
           onFocus={() => combobox.openDropdown()}
           onBlur={() => {

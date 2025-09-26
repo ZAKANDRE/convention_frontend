@@ -1,21 +1,23 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { patchRing } from '../../api/conventionsApi';
 import {Collapse , Button } from 'react-bootstrap';
+import { SignBtn, DeleteBtn } from '../SvgIcons/SvgIcons'
 import './SignatureCanvas.css'
 
-export const SignatureCanvas = ({ convId1, userRole, row,open1, isDisabled = false, setMainLinks, valueRing=25, setOpen }) => {
-  // const [open, setOpen] = useState(false);
+export const SignatureCanvas = ({ convId1, userRole, row,open1, isDisabled = false, setMainLinks,  setOpen }) => {
 
-    if(userRole === 'ROLE_STUDENT' && row.progress >= 25 ){
+  if(userRole === 'ROLE_STUDENT' && row.progress >= 25 ){
     isDisabled = true;
   }
-  const calculatedValueRing = userRole === 'ROLE_COMMANDER' ? 20 : 100;
+
+  // const calculatedValueRing = userRole === 'ROLE_COMMANDER' ? 20 : 100;
   
   const getProgressValue = () => {
     if (userRole === 'ROLE_COMMANDER') return 75;
-    if (userRole === 'ROLE_DIRECTOR') return 100;
-    if (userRole === 'ROLE_STUDENT') return 25;
+    if (userRole === 'ROLE_DIRECTOR' ) return 100;
+    if (userRole === 'ROLE_STUDENT'  ) return 25;
   };
+
   let provalue = getProgressValue();
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -25,12 +27,12 @@ export const SignatureCanvas = ({ convId1, userRole, row,open1, isDisabled = fal
 
   const setupCanvas = () => {
     const canvas = canvasRef.current;
-    if (!canvas) return; // Защита от null
+    if (!canvas) return; 
     
     const ctx = canvas.getContext('2d');
     setContext(ctx);
 
-    canvas.width = 500;
+    canvas.width = 250;
     canvas.height = 300;
     ctx.lineWidth = 5;
     ctx.lineCap = 'round';
@@ -39,7 +41,6 @@ export const SignatureCanvas = ({ convId1, userRole, row,open1, isDisabled = fal
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Применяем стили в зависимости от isDisabled
     if (isDisabled) {
       canvas.style.cursor = 'not-allowed';
       canvas.style.opacity = '0.6';
@@ -54,17 +55,17 @@ export const SignatureCanvas = ({ convId1, userRole, row,open1, isDisabled = fal
   };
 
   const startDrawing = (e) => {
-    if (isDisabled) return; // Блокируем если disabled
+    if (isDisabled) return; 
     setIsDrawing(true);
     const ctx = context;
-    if (!ctx) return; // Защита от null
+    if (!ctx) return; 
     ctx.beginPath();
     ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
     setIsEmpty(false);
   };
 
   const draw = (e) => {
-    if (isDisabled || !isDrawing || !context) return; // Блокируем если disabled
+    if (isDisabled || !isDrawing || !context) return; 
     const ctx = context;
     ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
     ctx.stroke();
@@ -75,7 +76,7 @@ export const SignatureCanvas = ({ convId1, userRole, row,open1, isDisabled = fal
   };
 
   const clearCanvas = () => {
-    if (isDisabled) return; // Блокируем если disabled
+    if (isDisabled) return; 
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -85,14 +86,14 @@ export const SignatureCanvas = ({ convId1, userRole, row,open1, isDisabled = fal
   };
 
   const saveImage = async () => {
-    if (isDisabled) return; // Блокируем если disabled
+    if (isDisabled) return; 
     
     const canvas = canvasRef.current;
     if (!canvas) return;
     
     const dataUrl = canvas.toDataURL();
     
-    console.log('Отправка подписи:', {
+    console.log('Envoie de la signature:', {
       convId: convId1,
       userRole: userRole,
       hasImage: !!dataUrl,
@@ -100,7 +101,7 @@ export const SignatureCanvas = ({ convId1, userRole, row,open1, isDisabled = fal
     });
 
     try {
-      const response = await fetch('http://localhost:8000/save-signature', {
+      const response = await fetch('https://antiquewhite-bee-570664.hostingersite.com/symfony/public/save-signature', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -122,74 +123,122 @@ export const SignatureCanvas = ({ convId1, userRole, row,open1, isDisabled = fal
         alert('Erreur: ' + result);
       }
     } catch (error) {
-      console.error('Ошибка fetch:', error);
+      console.error('Erreur fetch:', error);
       alert('Erreur de connexion');
     }
   };
 
-  useEffect(() => {
-    setupCanvas();
-  }, [isDisabled]); // Добавляем isDisabled в зависимости
+const handleTouchStart = (e) => {
+  if (isDisabled) return;
+  const touch = e.touches[0];
+  const canvas = canvasRef.current;
+  const rect = canvas.getBoundingClientRect();
 
-  return (
+  const x = touch.clientX - rect.left;
+  const y = touch.clientY - rect.top;
+
+  context.beginPath();
+  context.moveTo(x, y);
+  setIsDrawing(true);
+  setIsEmpty(false);
+
+  e.preventDefault(); 
+};
+
+const handleTouchMove = (e) => {
+  if (isDisabled || !isDrawing || !context) return;
+  const touch = e.touches[0];
+  const canvas = canvasRef.current;
+  const rect = canvas.getBoundingClientRect();
+
+  const x = touch.clientX - rect.left;
+  const y = touch.clientY - rect.top;
+
+  context.lineTo(x, y);
+  context.stroke();
+
+  e.preventDefault(); 
+};
+
+useEffect(() => {
+  setupCanvas();
+}, [isDisabled]); 
+  
+useEffect(() => {
+  const canvas = canvasRef.current;
+  if (!canvas) return;
+  const opts = { passive: false };
+  canvas.addEventListener("touchmove", handleTouchMove, opts);
+  
+  return () => {
+    canvas.removeEventListener("touchmove", handleTouchMove, opts);
+  };
+
+}, [handleTouchMove]);
+
+return (
     <>
-     <Collapse in={open1}>
+      <Collapse in={open1}>
+        <div id="example-collapse-text">
+          <span className='sign-here'> Veillez signer ci-dessous: </span>
+              <canvas
+                ref={canvasRef}
+                onMouseDown={isDisabled ? undefined : startDrawing}
+                onMouseMove={isDisabled ? undefined : draw}
+                onMouseUp={isDisabled ? undefined : stopDrawing}
+                onMouseOut={isDisabled ? undefined : stopDrawing}
 
-      <div id="example-collapse-text">
-      <span className='sign-here'> Veillez signer ci-dessous: </span>
+                onTouchStart={isDisabled ? undefined : handleTouchStart}
+                onTouchMove={isDisabled ? undefined : handleTouchMove}
+                onTouchEnd={isDisabled ? undefined : stopDrawing}
+                
+                style={{ 
+                  border: '1px solid black', 
+                  background: isDisabled ? '#f5f5f5' : 'white',
+                  cursor: isDisabled ? 'not-allowed' : '/images/quill.png',
+                  opacity: isDisabled ? 0.6 : 1,
+                  pointerEvents: isDisabled ? 'none' : 'auto'
+                }}
+              />
+          <br />
 
-          <canvas
-            ref={canvasRef}
-            onMouseDown={isDisabled ? undefined : startDrawing}
-            onMouseMove={isDisabled ? undefined : draw}
-            onMouseUp={isDisabled ? undefined : stopDrawing}
-            onMouseOut={isDisabled ? undefined : stopDrawing}
+          <Button 
+            className="btn btn-success"
+            onClick={async () => { 
+                      if (isEmpty) {
+                        alert('Vous n\'avez pas signé la convention!');
+                        return;
+                      }
+                        await patchRing(row.id, provalue, setMainLinks);
+                        saveImage(); 
+                        setOpen(!open)
+                      }}
+            disabled={isDisabled}
             style={{ 
-              border: '1px solid black', 
-              background: isDisabled ? '#f5f5f5' : 'white',
-              cursor: isDisabled ? 'not-allowed' : '/images/quill.png',
               opacity: isDisabled ? 0.6 : 1,
-              pointerEvents: isDisabled ? 'none' : 'auto'
+              cursor: isDisabled ? 'not-allowed' : 'pointer'
             }}
-          />
-      <br />
-      <button 
-        className="btn btn-success"
-        onClick={async () => { 
-          if (isEmpty) {
-            alert('Vous n\'avez pas signé la convention!');
-            return;
-          }
-          await patchRing(row.id, provalue, setMainLinks); saveImage(); setOpen(!open)
-        }}
-        disabled={isDisabled}
-        style={{ 
-          opacity: isDisabled ? 0.6 : 1,
-          cursor: isDisabled ? 'not-allowed' : 'pointer'
-        }}
-      >
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#ffffff"><path fill="none" stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 17V5c0-1.121-.879-2-2-2s-2 .879-2 2v12l2 2l2-2zM16 7h4m-2 12H5a2 2 0 1 1 0-4h4a2 2 0 1 0 0-4H6"/></svg>
-      </button>
+          >
+            <SignBtn/>
+          </Button>
 
-      <button 
-        className="btn btn-danger" 
-        onClick={clearCanvas}
-        disabled={isDisabled}
-        style={{ 
-          marginLeft: '10px',
-          opacity: isDisabled ? 0.6 : 1,
-          cursor: isDisabled ? 'not-allowed' : 'pointer'
-        }}
-      >
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
-        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-      </svg>
+          <Button 
+              className="btn btn-danger" 
+              id="btn-danger"
+              onClick={clearCanvas}
+              disabled={isDisabled}
+              style={{ 
+                marginLeft: '10px',
+                opacity: isDisabled ? 0.6 : 1,
+                cursor: isDisabled ? 'not-allowed' : 'pointer'
+              }}
+          >
+            <DeleteBtn />
+          </Button>
 
-      </button>
-    </div>
-          </Collapse>
-
+        </div>
+      </Collapse>
     </>
   );
+
 };

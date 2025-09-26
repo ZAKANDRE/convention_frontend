@@ -9,7 +9,7 @@ export const postSociety = async (
   setMainLinks
 ) => {
   try {
-    const societyPost = await fetch('http://127.0.0.1:8000/api/societies', {
+    const societyPost = await fetch('https://antiquewhite-bee-570664.hostingersite.com/symfony/public/api/societies', {
       method: 'POST',
       headers: {
         'Accept': 'application/ld+json',
@@ -32,7 +32,7 @@ export const postSociety = async (
     const createdSocietyId = data.id;
 
     await putMethod(
-      `http://127.0.0.1:8000/api/conventions/${conventionId}`,
+      `https://antiquewhite-bee-570664.hostingersite.com/symfony/public/api/conventions/${conventionId}`,
       selectedRow.studentId,
       selectedRow.commanderId,
       selectedRow.afpaDirectorId,

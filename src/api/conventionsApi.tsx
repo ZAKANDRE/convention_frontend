@@ -2,7 +2,7 @@
 import { extractSocietyId } from '../utils/dataFormatters'
 
 export const fetchDate = async (setMainLinks) => {
-  const res = await fetch('http://127.0.0.1:8000/api/conventions');
+  const res = await fetch('https://antiquewhite-bee-570664.hostingersite.com/symfony/public/api/conventions');
   if (!res.ok) throw new Error('Erreur fetch convention');
   const data = await res.json();
   const rows = data.member
@@ -15,7 +15,7 @@ export const fetchDate = async (setMainLinks) => {
   return rows;
 };
 
-export const putMethod = async (link, st_id, cne_id,dir_id, form_id, d_st, d_end, soc_link, s_row, progress?:number,setMainLinks ) => {
+export const putMethod = async (link, st_id, cne_id,dir_id, form_id, d_st, d_end, soc_link, s_row, progress?:number,setMainLinks?:any ) => {
     try {const updateSocietyConvention = await fetch (`${link}`,{
           method: 'PUT',
           headers: {
@@ -37,7 +37,6 @@ export const putMethod = async (link, st_id, cne_id,dir_id, form_id, d_st, d_end
         if(!updateSocietyConvention.ok){
           throw new Error (`${updateSocietyConvention.status}`);
         }
-        const updatedData = await updateSocietyConvention.json();
         fetchDate(setMainLinks);
         } catch (error) {
         console.error('PUT method error:', error);
@@ -54,46 +53,51 @@ export const postConvention = async (
   handleCloseModal,
   setError
 ) => {
-  try {
-    const conventionPost = await fetch('http://127.0.0.1:8000/api/conventions', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/ld+json',
-        'Content-Type': 'application/ld+json;charset=UTF-8'
-      },
-      body: JSON.stringify({
-        studentId: userInfo.id,
-        commanderId: 114,
-        afpaDirectorId: 115,
-        formationId: userInfo.formation.id,
-        dateStart: inputDateStart,
-        dateEnd: inputDateEnd,
-        users: [],
-        society: "/api/societies/303",
-        progress: 0,
-        tuteurId: 113,
-        studentSignaturePath: "nothing",
-        societySignaturePath: "nothing",
-        commanderSignaturePath: "nothing",
-        directorSignaturePath: "nothing"
-      })
-    });
+  if(inputDateEnd <= inputDateStart){
+      alert("La date de fin est inférieure ou égale à la date de début du stage. Merci de la ressaisir !");
+  }
+  else {
+      try {
+        const conventionPost = await fetch('https://antiquewhite-bee-570664.hostingersite.com/symfony/public/api/conventions', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/ld+json',
+            'Content-Type': 'application/ld+json;charset=UTF-8'
+          },
+          body: JSON.stringify({
+            studentId: userInfo.id,
+            commanderId: 114,
+            afpaDirectorId: 115,
+            formationId: userInfo.formation.id,
+            dateStart: inputDateStart,
+            dateEnd: inputDateEnd,
+            users: [],
+            society: "/api/societies/303",
+            progress: 0,
+            tuteurId: 113,
+            studentSignaturePath: "nothing",
+            societySignaturePath: "nothing",
+            commanderSignaturePath: "nothing",
+            directorSignaturePath: "nothing"
+          })
+        });
 
-    if (!conventionPost.ok) {
-      throw new Error(`Erreur POST: ${conventionPost.status}`);
-    }
+        if (!conventionPost.ok) {
+          throw new Error(`Erreur POST: ${conventionPost.status}`);
+        }
 
-    await fetchDate(setMainLinks);
-    handleCloseModal();
-  } catch (err) {
-    setError(err.message);
+        await fetchDate(setMainLinks);
+        handleCloseModal();
+      } catch (err) {
+        setError(err.message);
+      }
   }
 };
 
 
 export const deleteConvention = async(conventionId: number, setError, setMainLinks) => {
   try{
-    const deleteConv = await fetch(`http://127.0.0.1:8000/api/conventions/${conventionId}`, {
+    const deleteConv = await fetch(`https://antiquewhite-bee-570664.hostingersite.com/symfony/public/api/conventions/${conventionId}`, {
       method: 'DELETE',
       headers: {
         'Accept' : 'application/ld+json'
@@ -113,7 +117,7 @@ export const updateRing = (row, setMainLinks) => async (e, onSuccess) => {
 
   try {
     await putMethod(
-      `http://127.0.0.1:8000/api/conventions/${row.id}`,
+      `antiquewhite-bee-570664.hostingersite.com/api/conventions/${row.id}`,
       row.studentId,
       row.commanderId,
       row.afpaDirectorId,
@@ -137,7 +141,7 @@ export const updateRing = (row, setMainLinks) => async (e, onSuccess) => {
 // 1. Измените сигнатуру функции
 export const patchRing = async (id, progress_number, setMainLinks = null) => {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/conventions/${id}`, {
+    const response = await fetch(`https://antiquewhite-bee-570664.hostingersite.com/symfony/public/api/conventions/${id}`, {
       method: 'PATCH',
       headers: {
         'Accept': 'application/ld+json',

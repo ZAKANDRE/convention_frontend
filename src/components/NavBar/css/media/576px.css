@@ -1,0 +1,92 @@
+@media screen and ( min-width:320px){
+    header._header_1bl48_1{
+        padding: 6% 0;
+        margin-bottom: 0;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    header._header_1bl48_1 .main-logo{
+        position: absolute!important;
+        right: 5%;
+        margin-top: -5px;
+    }
+    .header-right-side{
+        display: flex;
+        justify-content: center;
+    }
+    .m_7485cace:where([data-strategy='block']):where([data-fluid]){
+        margin: 0;
+        padding: 0;
+        width: 85%;
+    }
+    .m_4081bf90{
+        justify-self: center;
+    }
+    .m_576c9d4 {
+        justify-content: center;
+    }
+    #navbarScroll{
+        margin: 7% 0 0 0;
+    }
+    nav.bg-body-tertiary{
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .navbar-brand{
+        margin: 0;
+    }
+    .notification {
+        position: relative;
+        width: 25px;
+        cursor: pointer;
+        margin-right: 25px;
+    }
+    #notification {
+        margin-left: 105px;
+    }
+    .notif-alarm{
+        background: red;
+        border-radius: 50%;
+        width: 15px;
+        height: 15px;
+        position: absolute;
+        right: -1px;
+        top:-3px;
+        color: #fff;
+        text-align: center;
+        vertical-align: middle;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+    }
+    .user-info-wrap{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    ._userActive_1bl48_93{
+        background: transparent!important;
+    }
+    .bi-trash{
+        margin-left: 15px;
+    }
+    .clear-notification{
+        background: rgba(0, 0, 0, .5);
+        color: #fff;
+        text-align: center;
+    }
+    .clear-notification:hover{
+        background: #fff;
+        color: #000;
+    }
+    .mantine-Menu-label{
+        display: flex;
+        justify-content: space-between;
+    }
+    .mantine-Menu-label svg:hover{
+        fill: red;
+        cursor: pointer;
+    }
+}

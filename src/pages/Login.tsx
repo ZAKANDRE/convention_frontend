@@ -1,9 +1,7 @@
 import {
   Anchor,
   Button,
-  Checkbox,
   Container,
-  Group,
   Image,
   Paper,
   PasswordInput,
@@ -11,20 +9,44 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import Afpalogo from '../assets/logo/logo3.png'
-import classes from '../module/css/Login.module.css';
-import { Link, useNavigate } from 'react-router-dom';
+import Afpalogo from '../assets/logo/logo3.png';
+import classes from './css/module/Login.module.css';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useForm } from '@mantine/form';
-import { useEffect, useState } from 'react';
-import { Spinner } from '../components/Spinner/Spinner.tsx'
+import { useState } from 'react';
+import { Spinner } from '../components/Spinner/Spinner.tsx';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';  // <-- импортируем хук useAuth
 import './css/Login.css';
+import './css/media/login/320.css';
+import { useEffect, useRef } from 'react';
 
 export function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [showSpinner, setShowSpinner] = useState(false);
-  const token = localStorage.getItem('userToken');
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.muted = true;
+      const playPromise = video.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          const onFirstTouch = () => {
+            video.play();
+            window.removeEventListener('touchstart', onFirstTouch);
+          };
+          window.addEventListener('touchstart', onFirstTouch);
+        });
+      }
+    }
+  }, []);
+  
+  const { login } = useAuth();  // <-- получаем метод login из контекста
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -37,113 +59,94 @@ export function Login() {
     },
   });
 
-  // if (token) {
-  //   setTimeout(() => window.location.href = '/home', 50);
-  //   return <Spinner />;
-  // }
-  // useEffect(() => {
-  //     if (localStorage.getItem('userToken')) {
-  //       navigate('/home');
-  //     }
-  //   }, [navigate]);
-    
-  // const form = useForm({
-  //   mode: 'uncontrolled',
-  //   initialValues: {
-  //     email: '',
-  //     password: '',
-  //   },
-  //   validate: {
-  //     email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-  //   },
-  // });
-
   const handleFormSubmit = (values) => {
     setLoading(true);
-    console.log("Submitting raw values:", values);
+
     const userPayload = {
       ...values,
     };
 
-    axios.post('http://127.0.0.1:8000/api/login_check', userPayload, {
-      headers: {
-        'Content-Type': 'application/ld+json'
+    axios.post(
+      'https://antiquewhite-bee-570664.hostingersite.com/symfony/public/api/login_check',
+      userPayload,
+      {
+        headers: {
+          'Content-Type': 'application/ld+json',
+        },
       }
-    })
+    )
       .then(function (response) {
-        console.log("Connexion réussie:", response.data);
+        console.log('Connexion réussie:', response.data);
         const token = response.data.token;
-        localStorage.setItem('userToken', token);
-        setShowSpinner(true);
 
         if (token) {
-          localStorage.setItem('jwt_token', token);
-          // navigate('/home');
-          window.location.href = '/home';
+          login(token);            
+          setShowSpinner(true);
+          navigate('/home');       
         } else {
-          console.log("Aucun token reçu, veuillez réessayer.");
+          console.log('Aucun token reçu, veuillez réessayer.');
         }
       })
-      .catch(function (error) {
-        // console.error("Error1:", error.response ? error.response.data : error.message);
-        alert('Vos données ne sont pas correctes, veuillez les ressaisir !')
+      .catch(function () {
+        alert('Vos données ne sont pas correctes, veuillez les ressaisir !');
       })
       .finally(() => {
         setLoading(false);
       });
   };
 
-
-   if (showSpinner) {
-    return <Spinner/>;
+  if (showSpinner) {
+    return <Spinner />;
   }
+
   return (
     <>
-         <video width="600" height="100"  autoPlay muted loop playsInline className='back-video'>
-          <source src="/upload/video.mp4" type="video/mp4" />
-          Votre navigatteur ne support pas video.
-        </video>
-    <Container size={420} mt={-100} id="login-form" >
-      <Image src={Afpalogo} ></Image>
-      <Title ta="center" className={classes.title}>
-        Connexion
-      </Title>
+    <video ref={videoRef} width="600" height="100" autoPlay muted loop playsInline className="back-video">
+        <source src="/upload/video.mp4" type="video/mp4" />
+        Votre navigatteur ne support pas video.
+    </video>
+   
+      <Container size={420} mt={-100} id="login-form">
+        <Image src={Afpalogo} id="logo-login"></Image>
+    
+        <Title ta="center" className={classes.title}>
+          Connexion
+        </Title>
 
-      <Text className={classes.subtitle}>
-        <Anchor component={Link} to="/create-account" c="#86bc24">
-          Créer un compte
-        </Anchor>
-        <Anchor component={Link} to="/home" c="#86bc24">
-          Home Page
-        </Anchor>
-      </Text>
-      <form onSubmit={form.onSubmit(handleFormSubmit)}>
-        <Paper withBorder shadow="sm" p={22} mt={30} radius="md">
-          <TextInput
-            label="Courrier"
-            placeholder="courrier@nomcourrier.com"
-            required radius="md"
-            {...form.getInputProps('email')}
-          />
-          <PasswordInput
-            label="Mot de passe"
-            placeholder="Mot de passe ultra securisée"
-            required mt="md"
-            radius="md"
-            {...form.getInputProps('password')}
-          />
-          <Group justify="space-between" mt="lg">
-            <Checkbox label="Se souvenir" />
-            <Anchor c='#86bc24' component="button" size="sm">
-              Mot de passe oublié?
-            </Anchor>
-          </Group>
-          <Button color='#86bc24' fullWidth mt="xl" radius="md" type="submit">
-            Connexion
-          </Button>
-        </Paper>
-      </form>
-    </Container >
+        <Text className={classes.subtitle}>
+          <Anchor component={Link} to="/create-account">
+            Créer un compte
+          </Anchor>
+          
+          <span> / </span>
+          <Anchor component={Link} to="/home">
+            Home Page
+          </Anchor>
+        </Text>
+
+        <form onSubmit={form.onSubmit(handleFormSubmit)}>
+          <Paper withBorder shadow="sm" p={22} mt={30} radius="md">
+            <TextInput
+              label="Courrier"
+              placeholder="courrier@nomcourrier.com"
+              required
+              radius="md"
+              {...form.getInputProps('email')}
+            />
+            <PasswordInput
+              label="Mot de passe"
+              placeholder="Mot de passe"
+              required
+              mt="md"
+              radius="md"
+              {...form.getInputProps('password')}
+            />
+            <Button color="#86bc24" fullWidth mt="xl" radius="md" type="submit" disabled={loading}>
+              Connexion
+            </Button>
+          </Paper>
+        </form>
+      </Container>
     </>
   );
 }

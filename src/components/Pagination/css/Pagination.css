@@ -1,0 +1,21 @@
+.pagination-wrap{
+    padding: 20px ;
+}
+.pagination-block{
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center; 
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.pagination-digit{
+    display: flex;
+    gap: 5px;
+}
+.pagination-info{
+    margin-top: 15px; 
+    text-align: center; 
+    color: #6c757d;
+    font-size: 14px;
+}
