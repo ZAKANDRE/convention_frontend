@@ -9,7 +9,7 @@ Le processus inclut un circuit de signature électronique, structuré de manièr
 Une fois la convention générée, un lien unique est créé côté back-end. Ce lien est ensuite transmis à l'entreprise d'accueil, qui est chargée de compléter les informations requises et de procéder à la signature électronique.<br> 
 
 Après la signature par l’entreprise, la convention est transmise au commandant militaire, qui y appose également sa signature.<br> 
-Enfin, le directeur du centre intervient pour vérifier les informations, valider le document et confirmer la période probatoire en entreprise à travers sa signature numérique.
+Enfin, le directeur du centre intervient pour vérifier les informations, valider le document et confirmer la période probatoire en entreprise à travers sa signature numérique.  <br>  <br>
 <strong> 
     Le site est responsive à partir d'une largeur de 320 px, et a été conçu dans le but d’être pleinement accessible, 
     notamment sur les petits écrans.
