@@ -18,7 +18,6 @@ Enfin, le directeur du centre intervient pour vérifier les informations, valide
     Email : test@test.com  
     Mot de passe : Password123+  
     Vous pouvez aussi créer un autre compte (une adresse e‑mail factice suffit pour la démo).  
-    
     <a href="https://antiquewhite-bee-570664.hostingersite.com" target="_blank">🌐 View Live Demo</a>
 </strong> 
 
