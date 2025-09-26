@@ -28,12 +28,10 @@ Enfin, le directeur du centre intervient pour vérifier les informations, valide
 | MySQL       | Base de données         | —             |
 
 
-
-
 <p align="center">
-  <img src="/public/images/readme/mysql.png" alt="MySQL" height="200" title="MySQL" style="margin-right: 10px;">
-  <img src="/public/images/readme/symfony-e1554299312897.png" alt="Symfony" height="200" title="Symfony" style="margin-right: 10px;">
-  <img src="/public/images/readme/react.gif" alt="React" height="200" title="React">
+  <img src="/public/images/readme/mysql.png" alt="MySQL" height="100" title="MySQL" style="margin-right: 10px;">
+  <img src="/public/images/readme/symfony-e1554299312897.png" alt="Symfony" height="100" title="Symfony" style="margin-right: 10px;">
+  <img src="/public/images/readme/react.gif" alt="React" height="100" title="React">
 </p>
 
 ## 🔗 Démo en ligne
