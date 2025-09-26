@@ -78,9 +78,9 @@ Finally, the center director reviews the information, validates the document, an
 
 
 <p align="center">
-  <img src="/public/images/readme/mysql.png" alt="MySQL" height="200" title="MySQL" style="margin-right: 10px;">
-  <img src="/public/images/readme/symfony-e1554299312897.png" alt="Symfony" height="200" title="Symfony" style="margin-right: 10px;">
-  <img src="/public/images/readme/react.gif" alt="React" height="200" title="React">
+  <img src="/public/images/readme/mysql.png" alt="MySQL" height="150" title="MySQL" style="margin-right: 10px;">
+  <img src="/public/images/readme/symfony-e1554299312897.png" alt="Symfony" height="150" title="Symfony" style="margin-right: 10px;">
+  <img src="/public/images/readme/react.gif" alt="React" height="150" title="React">
 </p>
 
 ## 🔗 Live Demo
