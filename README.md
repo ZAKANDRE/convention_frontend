@@ -27,6 +27,9 @@ Enfin, le directeur du centre intervient pour vérifier les informations, valide
 | React       | Librairie JS (Front-End) | 19.1.1        |
 | MySQL       | Base de données         | —             |
 
+
+
+
 <p align="center">
   <img src="/public/images/readme/mysql.png" alt="MySQL" height="100" title="MySQL" style="margin-right: 10px;">
   <img src="/public/images/readme/symfony-e1554299312897.png" alt="Symfony" height="100" title="Symfony" style="margin-right: 10px;">
@@ -34,15 +37,17 @@ Enfin, le directeur du centre intervient pour vérifier les informations, valide
 </p>
 
 ## 🔗 Démo en ligne
+
 <strong>
 Le site est responsive à partir d'une largeur de 320 px, et a été conçu dans le but d’être pleinement accessible, 
 notamment sur les petits écrans.
 <strong>
+
 Vous pouvez accéder à la version en ligne du projet ici :
 
-<a href="https://antiquewhite-bee-570664.hostingersite.com" target="_blank">🌐 Voir la démo en ligne</a>
+<a href="https://antiquewhite-bee-570664.hostingersite.com" target="_blank" align="center"> 🌐 Voir la démo en ligne</a>
 
------------------------English------------------------------
+----------------------------------------------English-----------------------------------------------------
 # 📘 Project – Digital Internship Agreement
 
 ## 🎓 Project Objective
