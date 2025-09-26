@@ -42,7 +42,7 @@ Enfin, le directeur du centre intervient pour vérifier les informations, valide
 Le site est responsive à partir d'une largeur de 320 px, et a été conçu dans le but d’être pleinement accessible, 
 notamment sur les petits écrans.
 <strong>
-
+<br/>
 Vous pouvez accéder à la version en ligne du projet ici :
 
 <a href="https://antiquewhite-bee-570664.hostingersite.com" target="_blank" align="center"> 🌐 Voir la démo en ligne</a>
