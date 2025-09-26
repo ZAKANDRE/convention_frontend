@@ -31,9 +31,9 @@ Enfin, le directeur du centre intervient pour vérifier les informations, valide
 
 
 <p align="center">
-  <img src="/public/images/readme/mysql.png" alt="MySQL" height="100" title="MySQL" style="margin-right: 10px;">
-  <img src="/public/images/readme/symfony-e1554299312897.png" alt="Symfony" height="100" title="Symfony" style="margin-right: 10px;">
-  <img src="/public/images/readme/react.gif" alt="React" height="100" title="React">
+  <img src="/public/images/readme/mysql.png" alt="MySQL" height="200" title="MySQL" style="margin-right: 10px;">
+  <img src="/public/images/readme/symfony-e1554299312897.png" alt="Symfony" height="200" title="Symfony" style="margin-right: 10px;">
+  <img src="/public/images/readme/react.gif" alt="React" height="200" title="React">
 </p>
 
 ## 🔗 Démo en ligne
@@ -76,10 +76,11 @@ Finally, the center director reviews the information, validates the document, an
 | React     | JavaScript Library (Front-End) | 19.1.1  |
 | MySQL     | Database                 | —             |
 
-<p style="display: flex; justify-content: center; align-items: center; background: rgba(0, 0, 0, .1); border-radius: 50%;">
-  <img src="/public/images/readme/mysql.png" alt="MySQL" width="200" style="margin-right: 20px;"/>
-  <img src="/public/images/readme/symfony-e1554299312897.png" alt="Symfony" width="200" style="margin-right: 20px;"/>
-  <img src="/public/images/readme/react.gif" alt="React" width="200"/>
+
+<p align="center">
+  <img src="/public/images/readme/mysql.png" alt="MySQL" height="200" title="MySQL" style="margin-right: 10px;">
+  <img src="/public/images/readme/symfony-e1554299312897.png" alt="Symfony" height="200" title="Symfony" style="margin-right: 10px;">
+  <img src="/public/images/readme/react.gif" alt="React" height="200" title="React">
 </p>
 
 ## 🔗 Live Demo
