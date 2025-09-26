@@ -21,39 +21,66 @@ Enfin, le directeur du centre intervient pour vérifier les informations, valide
 
 ## ⚙️ Technologies utilisées
 
-- **Back-End :** Symfony 7.3.2
-- **Front-End :** React 19.1.1
-- **Base de données :** MySQL
-
-<p align="center">
-  <img src="/public/images/readme/mysql.png" alt="MySQL" width="100" style="margin-right: 20px;"/>
-  <img src="/public/images/readme/symfony-e1554299312897.png" alt="Symfony" width="100" style="margin-right: 20px;"/>
-  <img src="/public/images/readme/react.gif" alt="React" width="100"/>
-</p>
-
-## 🔗 Démo en ligne
-
-Vous pouvez accéder à la version en ligne du projet ici :
-
-🌐 [https://antiquewhite-bee-570664.hostingersite.com](https://antiquewhite-bee-570664.hostingersite.com)
-
------------------------English------------------------------
-
-This project aims to enable a trainee undergoing professional retraining to generate a digital internship agreement.<br> 
-The process includes a secure electronic signature workflow.
-
-Once the agreement is created, a unique link is generated on the back-end of the application. This link is then sent to the host company, which is responsible for entering the required information and completing the digital signature.<br> 
-
-After the company signs the document, the agreement is forwarded to the military commander, who signs it in turn.<br> 
-Finally, the center director reviews the document, validates the information, and confirms the internship probation period by providing their digital signature.<br> 
-
 | Technologie | Description             | Version       |
 |-------------|-------------------------|---------------|
 | Symfony     | Framework PHP (Back-End) | 7.3.2         |
 | React       | Librairie JS (Front-End) | 19.1.1        |
 | MySQL       | Base de données         | —             |
+<p style="display: flex; justify-content: center; align-items: center; background: rgba(0, 0, 0, .1); border-radius: 50%;">
+  <img src="/public/images/readme/mysql.png" alt="MySQL" width="200" style="margin-right: 20px;"/>
+  <img src="/public/images/readme/symfony-e1554299312897.png" alt="Symfony" width="200" style="margin-right: 20px;"/>
+  <img src="/public/images/readme/react.gif" alt="React" width="200"/>
+</p>
 
-Database: MySQL<br> 
-<img src="/public/images/readme/mysql.png" alt="mysql">
-<img src="/public/images/readme/symfony-e1554299312897.png" alt="symfony">
-<img src="/public/images/readme/react.gif" alt="react">
+## 🔗 Démo en ligne
+<strong>
+Le site est responsive à partir d'une largeur de 320 px, et a été conçu dans le but d’être pleinement accessible, 
+notamment sur les petits écrans.
+<strong>
+Vous pouvez accéder à la version en ligne du projet ici :
+
+<a href="https://antiquewhite-bee-570664.hostingersite.com" target="_blank">🌐 Voir la démo en ligne</a>
+
+-----------------------English------------------------------
+# 📘 Project – Digital Internship Agreement
+
+## 🎓 Project Objective
+
+This project aims to allow a trainee undergoing professional retraining to generate a digital internship agreement.<br>
+The process includes an automated electronic signature workflow.<br>
+
+Once the agreement is generated, a unique link is created on the back-end. This link is then sent to the host company, which is responsible for filling in the required information and completing the digital signature.<br>
+
+After the company signs the document, the agreement is forwarded to the military commander, who also signs it.<br>
+Finally, the center director reviews the information, validates the document, and confirms the probation period in the company by providing a digital signature.
+
+## 🔁 Signature Workflow
+
+1. Generation of the agreement  
+2. Sending the link to the company  
+3. Signature by the company  
+4. Signature by the military commander  
+5. Validation by the center director  
+
+## ⚙️ Technologies Used
+
+| Technology | Description             | Version       |
+|-----------|-------------------------|---------------|
+| Symfony   | PHP Framework (Back-End) | 7.3.2         |
+| React     | JavaScript Library (Front-End) | 19.1.1  |
+| MySQL     | Database                 | —             |
+
+<p style="display: flex; justify-content: center; align-items: center; background: rgba(0, 0, 0, .1); border-radius: 50%;">
+  <img src="/public/images/readme/mysql.png" alt="MySQL" width="200" style="margin-right: 20px;"/>
+  <img src="/public/images/readme/symfony-e1554299312897.png" alt="Symfony" width="200" style="margin-right: 20px;"/>
+  <img src="/public/images/readme/react.gif" alt="React" width="200"/>
+</p>
+
+## 🔗 Live Demo
+<strong>
+The site is responsive starting from a width of 320px, and was designed to be fully accessible, 
+particularly on small screens.
+</strong>
+You can access the live version of the project here:
+
+<a href="https://antiquewhite-bee-570664.hostingersite.com" target="_blank">🌐 View Live Demo</a>
