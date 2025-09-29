@@ -37,54 +37,8 @@ Enfin, le directeur du centre intervient pour vérifier les informations, valide
 | React       | Librairie JS (Front-End) | 19.1.1        |
 | MySQL       | Base de données         | —             |
 
+Code source de partie back end en Symfony - <a href="https://github.com/ZAKANDRE/convention_back" target="_blank">lien</a>
 
 <p align="center">
-  <img src="/public/images/readme/mysql.png" alt="MySQL" height="100" title="MySQL" style="margin-right: 10px;">
-  <img src="/public/images/readme/symfony-e1554299312897.png" alt="Symfony" height="100" title="Symfony" style="margin-right: 10px;">
-  <img src="/public/images/readme/react.gif" alt="React" height="100" title="React">
+  <img src="/public/images/readme/readme_img.JPG" alt="MySQL" height="100" title="MySQL" style="margin-right: 10px;">
 </p>
-
-----------------------------------------------English-----------------------------------------------------
-# 📘 Project – Digital Internship Agreement
-
-## 🎓 Project Objective
-
-This project aims to allow a trainee undergoing professional retraining to generate a digital internship agreement.<br>
-The process includes an automated electronic signature workflow.<br>
-
-Once the agreement is generated, a unique link is created on the back-end. This link is then sent to the host company, which is responsible for filling in the required information and completing the digital signature.<br>
-
-After the company signs the document, the agreement is forwarded to the military commander, who also signs it.<br>
-Finally, the center director reviews the information, validates the document, and confirms the probation period in the company by providing a digital signature.
-
-## 🔁 Signature Workflow
-
-1. Generation of the agreement  
-2. Sending the link to the company  
-3. Signature by the company  
-4. Signature by the military commander  
-5. Validation by the center director  
-
-## ⚙️ Technologies Used
-
-| Technology | Description             | Version       |
-|-----------|-------------------------|---------------|
-| Symfony   | PHP Framework (Back-End) | 7.3.2         |
-| React     | JavaScript Library (Front-End) | 19.1.1  |
-| MySQL     | Database                 | —             |
-
-
-<p align="center">
-  <img src="/public/images/readme/mysql.png" alt="MySQL" height="100" title="MySQL" style="margin-right: 10px;">
-  <img src="/public/images/readme/symfony-e1554299312897.png" alt="Symfony" height="100" title="Symfony" style="margin-right: 10px;">
-  <img src="/public/images/readme/react.gif" alt="React" height="100" title="React">
-</p>
-
-## 🔗 Live Demo
-<strong>
-The site is responsive starting from a width of 320px, and was designed to be fully accessible, 
-particularly on small screens.
-</strong>
-You can access the live version of the project here:
-
-<a href="https://antiquewhite-bee-570664.hostingersite.com" target="_blank">🌐 View Live Demo</a>
